@@ -14,7 +14,7 @@ def create_and_validate_params(operation_type: str, **kwargs) -> dict:
     """
     params: dict = dict()
     for key, value in kwargs.items():
-        if value:
+        if value is not None:
             for validator in VALIDATORS.get(key):
                 validator(key, value)
             params[key] = value
