@@ -1,7 +1,7 @@
 """Validators for arguments."""
 import re
 
-from src.exceptions import ArgumentValidationError
+from foreger_service.exceptions import ArgumentValidationError
 
 
 class Validators:

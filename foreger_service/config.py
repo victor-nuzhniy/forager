@@ -6,8 +6,8 @@ from typing import Any, Optional
 import httpx
 from httpx import Response
 
-from src.exceptions import ForagerAPIError, ForagerKeyError
-from src.utils import create_and_validate_params, validate_storage_key
+from foreger_service.exceptions import ForagerAPIError, ForagerKeyError
+from foreger_service.utils import create_and_validate_params, validate_storage_key
 
 
 class CRUDService:
