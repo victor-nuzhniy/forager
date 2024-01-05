@@ -11,11 +11,12 @@ SERVICES_KWARGS = {
         "seniority",
         "department",
         "required_fields",
-        "raw",
     },
 }
 
 VALIDATORS = {
+    "operation": (Validators.validate_kwargs_list,),
+    "required_arguments": (Validators.validate_required_arguments,),
     "domain": (Validators.validate_str,),
     "company": (Validators.validate_str,),
     "limit": (Validators.validate_int,),
@@ -24,5 +25,4 @@ VALIDATORS = {
     "seniority": (Validators.validate_str, Validators.validate_seniority),
     "department": (Validators.validate_str, Validators.validate_department),
     "required_field": (Validators.validate_str, Validators.validate_required_field),
-    "raw": (Validators.validate_raw,),
 }
