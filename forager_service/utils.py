@@ -1,7 +1,7 @@
 """Utilities for Forager project."""
 from __future__ import annotations
 
-from foreger_service.validators import VALIDATORS
+from forager_service.validators import VALIDATORS
 
 
 def create_and_validate_params(operation_type: str, **kwargs) -> dict:
