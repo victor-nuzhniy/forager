@@ -171,3 +171,24 @@ class Service:
         url: str = f"{self.endpoint}{operation}"
         params["api_key"] = self.api_key
         return self._perform_request(url, params, raw=raw)
+
+    def verify_email(
+        self,
+        email: str,
+        raw: bool = False,
+    ) -> dict:
+        """
+        Verify email.
+
+        :param email: str Email to verify.
+        :param raw: bool Gives back the entire response instead of just the 'data'.
+        :return: Full payload of the query as a dict.
+        """
+        operation: str = "email-verifier"
+        params: dict = create_and_validate_params(
+            operation,
+            email=email,
+        )
+        url: str = f"{self.endpoint}{operation}"
+        params["api_key"] = self.api_key
+        return self._perform_request(url, params, raw=raw)
