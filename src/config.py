@@ -3,6 +3,11 @@ from __future__ import annotations
 
 from typing import Optional
 
+import httpx
+
+from src.exceptions import ForagerAPIError
+from src.utils import create_and_validate_params
+
 
 class HunterService:
     """Singlton class for initialized instance."""
@@ -32,6 +37,27 @@ class Service:
         self.api_key: str = api_key
         self.endpoint: str = "https://api.hunter.io/v2/"
 
+    @staticmethod
+    def _perform_request(
+        url: str,
+        params: dict,
+        method: str = "get",
+        payload: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        raw: bool = False,
+    ):
+        """Perform http request."""
+        request = httpx.Request(
+            method, url, params=params, json=payload, headers=headers
+        )
+        with httpx.Client() as client:
+            response = client.send(request)
+        if raw:
+            return response
+        if (data := response.json().get("data")) and data is not None:
+            return data
+        raise ForagerAPIError(response.json())
+
     def domain_search(
         self,
         domain: Optional[str] = None,
@@ -43,7 +69,7 @@ class Service:
         department: Optional[str] = None,
         required_field: Optional[str] = None,
         raw: bool = False,
-    ):
+    ) -> dict:
         """
         Perform domain_research request. Return all found email addresses.
 
@@ -78,4 +104,17 @@ class Service:
         :return: Full payload of the query as a dict, with email addresses
         found.
         """
-        pass
+        params: dict = create_and_validate_params(
+            "domain_search",
+            domain=domain,
+            company=company,
+            limit=limit,
+            offset=offset,
+            type=email_type,
+            seniority=seniority,
+            department=department,
+            required_field=required_field,
+        )
+        url: str = f"{self.endpoint}domain_search"
+        params["api_key"] = self.api_key
+        return self._perform_request(url, params, raw=raw)
