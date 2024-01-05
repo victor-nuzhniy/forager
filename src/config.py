@@ -57,6 +57,7 @@ class HunterService:
     """Singlton class for initialized instance."""
 
     _hunter_service: Optional[Service] = None
+    _crud_service: CRUDService = CRUDService()
 
     def __new__(cls, *args, **kwargs) -> HunterService:
         """Create new instance, if it's None, otherwise use earlier created one."""
@@ -68,9 +69,13 @@ class HunterService:
         """Initialize hunter instance."""
         self._hunter_service = Service(api_key)
 
-    def get_service(self):
+    def get_service(self) -> Service:
         """Get hunter service instance."""
         return self._hunter_service
+
+    def get_crud_service(self) -> CRUDService:
+        """Get CRUDService instance."""
+        return self._crud_service
 
 
 class Service:
