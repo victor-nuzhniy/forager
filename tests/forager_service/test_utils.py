@@ -3,7 +3,7 @@ import pytest
 from faker import Faker
 
 from forager_service.exceptions import ArgumentValidationError
-from forager_service.utils import create_and_validate_params
+from forager_service.utils import create_and_validate_params, validate_storage_key
 
 
 class TestCreateAdnValidateParams:
@@ -82,3 +82,19 @@ class TestCreateAdnValidateParams:
         )
         with pytest.raises(ArgumentValidationError):
             create_and_validate_params(operation_type, **kwargs)
+
+
+class TestValidateStorageKey:
+    """Class for testing validate_storage_key method."""
+
+    def test_validate_storage_key(self, faker: Faker) -> None:
+        """Test validate_storage_key."""
+        argument: str = faker.pystr(min_chars=3, max_chars=10)
+        validate_storage_key(argument)
+
+    def test_validate_storage_key_error(self, faker: Faker) -> None:
+        """Test validate_storage_key, error case."""
+        argument: int = faker.random_int()
+        with pytest.raises(ArgumentValidationError) as ex_info:
+            validate_storage_key(argument)
+        assert str(ex_info.value) == "argument has wrong type."
