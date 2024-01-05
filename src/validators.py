@@ -71,7 +71,10 @@ class Validators:
                 raise ArgumentValidationError(f"{key} has wrong value.")
 
     @staticmethod
-    def validate_raw(key: str, value: bool) -> None:
-        """Validate raw argument."""
-        if not isinstance(value, bool):
-            raise ArgumentValidationError(f"{key} is wrong type.")
+    def validate_required_arguments(key: str, params: dict) -> None:
+        """Validate presence required argument in the list."""
+        if key == "domain_search":
+            if "domain" not in params and "company" not in params:
+                raise ArgumentValidationError(
+                    f"For {key} operation should be defined domain or company"
+                )
