@@ -15,3 +15,11 @@ class ArgumentError(ForagerException):
 
 class ArgumentValidationError(ForagerException):
     """Validation error, wrong type etc."""
+
+    pass
+
+
+class ForagerAPIError(ForagerException):
+    """API error."""
+
+    pass
