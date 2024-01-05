@@ -1,12 +1,56 @@
 """Configuration module for Forager project."""
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 import httpx
 
-from src.exceptions import ForagerAPIError
-from src.utils import create_and_validate_params
+from src.exceptions import ForagerAPIError, ForagerKeyError
+from src.utils import create_and_validate_params, validate_storage_key
+
+
+class CRUDService:
+    """Service for perform CRUD operations with storage."""
+
+    _storage: dict = dict()
+
+    def __new__(cls, *args, **kwargs) -> CRUDService:
+        """Create new instance, if it's None, otherwise use earlier created one."""
+        if not hasattr(cls, "instance"):
+            cls.instance = super(CRUDService, cls).__new__(cls, *args, **kwargs)
+        return cls.instance
+
+    def get_storage(self) -> dict:
+        """Get local storage."""
+        return self._storage
+
+    def create(self, key: str, value: Any) -> None:
+        """Save arbitrary data to storage."""
+        validate_storage_key(key)
+        if key in self._storage:
+            raise ForagerKeyError(
+                f"Key {key} already presents in storage. Use 'update' to modify value."
+            )
+        self._storage[key] = value
+
+    def read(self, key: str) -> Any:
+        """Read value from storage by key."""
+        validate_storage_key(key)
+        return self._storage.get(key)
+
+    def update(self, key: str, value: Any) -> None:
+        """Update key value."""
+        validate_storage_key(key)
+        if key not in self._storage:
+            raise ForagerKeyError(
+                f"key {key} alreade presents in storage. Use 'create' operation. "
+            )
+        self._storage[key] = value
+
+    def delete(self, key: str) -> Any:
+        """Delete key value pair and return value."""
+        validate_storage_key(key)
+        return self._storage.pop(key, None)
 
 
 class HunterService:
