@@ -1,4 +1,5 @@
 """Validators for arguments."""
+import re
 
 from src.exceptions import ArgumentValidationError
 
@@ -64,6 +65,27 @@ class Validators:
         """Validate max duration value."""
         if value < 3 or value > 20:
             raise ArgumentValidationError(f"{key} should be in range from 3 to 20.")
+
+    @staticmethod
+    def validate_email(key: str, value: str) -> None:
+        """Validate email."""
+        specials = "!#$%&'*+-/=?^_`{|?."
+        specials = re.escape(specials)
+        regex = re.compile(
+            "^(?!["
+            + specials
+            + "])(?!.*["
+            + specials
+            + "]{2})(?!.*["
+            + specials
+            + "]$)[A-Za-z0-9"
+            + specials
+            + "]+(?<!["
+            + specials
+            + "])@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+        )
+        if not re.fullmatch(regex, value):
+            raise ArgumentValidationError(f"{key} has invalid value.")
 
     @staticmethod
     def validate_required_arguments(key: str, params: dict) -> None:
