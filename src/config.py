@@ -128,6 +128,7 @@ class Service:
         last_name: Optional[str] = None,
         full_name: Optional[str] = None,
         max_duration: Optional[int] = None,
+        raw: bool = False,
     ) -> dict:
         """
         Find the most likely email address from a domain name, first and a last name.
@@ -152,7 +153,21 @@ class Service:
         Setting a longer duration allows us to refine the results and provide more
         accurate data. It must range between 3 and 20. The default is 10.
 
+        :param raw: bool Gives back the entire response instead of just the 'data'.
+
         :return: Full payload of the query as a dict, with email addresses
         found.
         """
-        pass
+        operation: str = "email-finder"
+        params: dict = create_and_validate_params(
+            operation,
+            domain=domain,
+            company=company,
+            first_name=first_name,
+            last_name=last_name,
+            full_name=full_name,
+            max_duration=max_duration,
+        )
+        url: str = f"{self.endpoint}{operation}"
+        params["api_key"] = self.api_key
+        return self._perform_request(url, params, raw=raw)
