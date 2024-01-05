@@ -17,8 +17,9 @@ def create_and_validate_params(operation_type: str, **kwargs) -> dict:
         if value:
             for validator in VALIDATORS.get(key):
                 validator(key, value)
-        params[key] = value
-    VALIDATORS.get("required_arguments")(operation_type, params)
+            params[key] = value
+    for validator in VALIDATORS.get("required_arguments"):
+        validator(operation_type, params)
     return params
 
 
