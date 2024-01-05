@@ -95,10 +95,10 @@ class Validators:
                 raise ArgumentValidationError(
                     f"For {key} operation should be defined domain or company"
                 )
-        if key == "email_finder":
-            if (
-                "first_name" not in params and "last_name" not in params
-            ) or "full_name" not in params:
+        if key == "email-finder":
+            if "full_name" not in params and (
+                "first_name" not in params or "last_name" not in params
+            ):
                 raise ArgumentValidationError(
                     "At least first_name and last_name or full_name should"
                     " be in params."
