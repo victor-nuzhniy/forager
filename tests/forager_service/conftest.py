@@ -66,3 +66,8 @@ def get_kwargs(faker: Faker) -> dict:
     argument: str = faker.city()
     kwargs["argument"] = argument
     return kwargs
+
+
+def get_query(x, y, **kwargs) -> tuple:
+    """Return given arguments."""
+    return x, y, kwargs
