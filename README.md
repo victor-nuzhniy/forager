@@ -68,7 +68,8 @@ Additionally, service supports crud methods for locally storing data
 
     crud_service.create("company_email", hunter.domain_search("company.com.ua"))
 
+## Tests
 
+    To run test firstly you need to install test dependency, then run
 
-
-
+        pytest --cov
