@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "forager"
+name = "forager_victor"
 version = "0.1.0"
-description = ""
+description = "Hunter.io v2 api implementation"
 authors = ["victro-nuzhniy <nuzhniyva@gmail.com>"]
 readme = "README.md"
+packages = [{include = "forager_victor"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-python-dotenv = "^1.0.0"
 httpx = "^0.26.0"
 
 [tool.poetry.group.lint]
