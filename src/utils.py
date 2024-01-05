@@ -20,3 +20,9 @@ def create_and_validate_params(operation_type: str, **kwargs) -> dict:
         params[key] = value
     VALIDATORS.get("required_arguments")(operation_type, params)
     return params
+
+
+def validate_storage_key(argument: str) -> None:
+    """Validate argument is str."""
+    for validator in VALIDATORS.get("argument"):
+        validator("argument", argument)
