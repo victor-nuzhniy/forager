@@ -178,10 +178,12 @@ class Service:
         raw: bool = False,
     ) -> dict:
         """
-        Verify email.
+        Verify the deliverability of an email address.
 
         :param email: str Email to verify.
+
         :param raw: bool Gives back the entire response instead of just the 'data'.
+
         :return: Full payload of the query as a dict.
         """
         operation: str = "email-verifier"
@@ -191,4 +193,37 @@ class Service:
         )
         url: str = f"{self.endpoint}{operation}"
         params["api_key"] = self.api_key
+        return self._perform_request(url, params, raw=raw)
+
+    def email_count(
+        self,
+        domain: Optional[str] = None,
+        company: Optional[str] = None,
+        email_type: Optional[str] = None,
+        raw: bool = False,
+    ) -> dict:
+        """
+        Count emails for domain or company.
+
+        :param domain: str The domain on which to search for emails. Must be
+        defined if company is not.
+
+        :param company: str The name of the company on which to search for emails.
+        Must be defined if domain is not.
+
+        :param email_type: str The type of emails to give back. Can be one of
+        'personal' or 'generic'.
+
+        :param raw: bool Gives back the entire response instead of just the 'data'.
+
+        :return: Full payload of the query as a dict.
+        """
+        operation: str = "email-count"
+        params: dict = create_and_validate_params(
+            operation,
+            domain=domain,
+            company=company,
+            type=email_type,
+        )
+        url: str = f"{self.endpoint}{operation}"
         return self._perform_request(url, params, raw=raw)

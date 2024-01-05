@@ -90,7 +90,7 @@ class Validators:
     @staticmethod
     def validate_required_arguments(key: str, params: dict) -> None:
         """Validate presence required argument in the list."""
-        if key in {"domain-search", "email-finder"}:
+        if key in {"domain-search", "email-finder", "email-count"}:
             if "domain" not in params and "company" not in params:
                 raise ArgumentValidationError(
                     f"For {key} operation should be defined domain or company"
