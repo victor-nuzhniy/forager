@@ -23,3 +23,9 @@ class ForagerAPIError(ForagerException):
     """API error."""
 
     pass
+
+
+class ForagerKeyError(ForagerException):
+    """Error, if key presents in storage."""
+
+    pass
