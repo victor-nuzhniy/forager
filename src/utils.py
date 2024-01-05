@@ -12,11 +12,11 @@ def create_and_validate_params(operation_type: str, **kwargs) -> dict:
     :param kwargs: dict Key word arguments for particular operation.
     :return: dict Params for request.
     """
-    VALIDATORS.get("operation")(operation_type, kwargs)
     params: dict = dict()
     for key, value in kwargs.items():
-        for validator in VALIDATORS.get(key):
-            validator(key, value)
+        if value:
+            for validator in VALIDATORS.get(key):
+                validator(key, value)
         params[key] = value
     VALIDATORS.get("required_arguments")(operation_type, params)
     return params
