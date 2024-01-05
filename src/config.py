@@ -104,8 +104,9 @@ class Service:
         :return: Full payload of the query as a dict, with email addresses
         found.
         """
+        operation: str = "domain-search"
         params: dict = create_and_validate_params(
-            "domain_search",
+            operation,
             domain=domain,
             company=company,
             limit=limit,
@@ -115,6 +116,43 @@ class Service:
             department=department,
             required_field=required_field,
         )
-        url: str = f"{self.endpoint}domain_search"
+        url: str = f"{self.endpoint}{operation}"
         params["api_key"] = self.api_key
         return self._perform_request(url, params, raw=raw)
+
+    def email_finder(
+        self,
+        domain: Optional[str] = None,
+        company: Optional[str] = None,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        full_name: Optional[str] = None,
+        max_duration: Optional[int] = None,
+    ) -> dict:
+        """
+        Find the most likely email address from a domain name, first and a last name.
+
+        :param domain: str The domain on which to search for emails. Must be
+        defined if company is not.
+
+        :param company: str The name of the company on which to search for emails.
+        Must be defined if domain is not.
+
+        :param first_name: str The person's first name. It doesn't need to be in
+        lowercase.
+
+        :param last_name: str The person's last name. It doesn't need to be in
+        lowercase.
+
+        :param full_name: str The person's full name. Note that you'll get better
+        results by supplying the person's first and last name if you can. It doesn't
+        need to be in lowercase.
+
+        :param max_duration: int The maximum duration of the request in seconds.
+        Setting a longer duration allows us to refine the results and provide more
+        accurate data. It must range between 3 and 20. The default is 10.
+
+        :return: Full payload of the query as a dict, with email addresses
+        found.
+        """
+        pass

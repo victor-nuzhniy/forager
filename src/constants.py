@@ -2,7 +2,7 @@
 from src.validators import Validators
 
 SERVICES_KWARGS = {
-    "domain_search": {
+    "domain-search": {
         "domain",
         "company",
         "limit",
