@@ -1,21 +1,10 @@
 """Validators for arguments."""
 
-from src.constants import SERVICES_KWARGS
 from src.exceptions import ArgumentValidationError
 
 
 class Validators:
     """Class with method for kwargs validations."""
-
-    @staticmethod
-    def validate_kwargs_list(key: str, values_dict: dict) -> None:
-        """Validate kwargs list."""
-        kwargs_set: set = SERVICES_KWARGS.get(key)
-        for k in values_dict:
-            if k not in kwargs_set:
-                raise ArgumentValidationError(
-                    f"{k} not in allowed arguments list for {key} operation."
-                )
 
     @staticmethod
     def validate_str(key: str, value: str) -> None:
@@ -71,10 +60,24 @@ class Validators:
                 raise ArgumentValidationError(f"{key} has wrong value.")
 
     @staticmethod
+    def validate_max_duration(key: str, value: int) -> None:
+        """Validate max duration value."""
+        if value < 3 or value > 20:
+            raise ArgumentValidationError(f"{key} should be in range from 3 to 20.")
+
+    @staticmethod
     def validate_required_arguments(key: str, params: dict) -> None:
         """Validate presence required argument in the list."""
-        if key == "domain_search":
+        if key in {"domain-search", "email-finder"}:
             if "domain" not in params and "company" not in params:
                 raise ArgumentValidationError(
                     f"For {key} operation should be defined domain or company"
+                )
+        if key == "email_finder":
+            if (
+                "first_name" not in params and "last_name" not in params
+            ) or "full_name" not in params:
+                raise ArgumentValidationError(
+                    "At least first_name and last_name or full_name should"
+                    " be in params."
                 )
