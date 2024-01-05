@@ -15,4 +15,5 @@ VALIDATORS = {
     "last_name": (Validators.validate_str,),
     "full_name": (Validators.validate_str,),
     "max_duration": (Validators.validate_int, Validators.validate_max_duration),
+    "email": (Validators.validate_str, Validators.validate_email),
 }
