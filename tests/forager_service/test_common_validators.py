@@ -21,7 +21,7 @@ class TestValidatorsValidateStr(object):
         param_value: int = faker.random_int()
         with pytest.raises(ArgumentValidationError) as ex_info:
             common_validators.validate_str(key, param_value)
-            assert str(ex_info.value) == "{key} has wrong type.".format(key=key)
+            assert str(ex_info.value) == '{key} has wrong type.'.format(key=key)
 
 
 class TestValidatorsValidateInt(object):
@@ -39,7 +39,7 @@ class TestValidatorsValidateInt(object):
         param_value: str = faker.city()
         with pytest.raises(ArgumentValidationError) as ex_info:
             common_validators.validate_int(key, param_value)
-            assert str(ex_info.value) == "{key} has wrong type.".format(key=key)
+            assert str(ex_info.value) == '{key} has wrong type.'.format(key=key)
 
 
 class TestValidatorsValidateEmail(object):
@@ -57,4 +57,4 @@ class TestValidatorsValidateEmail(object):
         param_value: str = faker.pystr(min_chars=3)
         with pytest.raises(ArgumentValidationError) as ex_info:
             common_validators.validate_email(key, param_value)
-            assert str(ex_info.value) == "{key} has invalid value.".format(key=key)
+            assert str(ex_info.value) == '{key} has invalid value.'.format(key=key)
