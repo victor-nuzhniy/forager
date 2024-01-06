@@ -1,7 +1,7 @@
 """Utilities for Forager project."""
 from __future__ import annotations
 
-from forager_service.validators import VALIDATORS
+from forager_service.validators import VALIDATORS, validate_arguments
 
 
 def create_and_validate_params(operation_type: str, **kwargs) -> dict:
@@ -12,6 +12,7 @@ def create_and_validate_params(operation_type: str, **kwargs) -> dict:
     :param kwargs: dict Key word arguments for particular operation.
     :return: dict Params for request.
     """
+    validate_arguments(operation_type, kwargs)
     params: dict = dict()
     for key, value in kwargs.items():
         if value is not None:
@@ -21,9 +22,3 @@ def create_and_validate_params(operation_type: str, **kwargs) -> dict:
     for validator in VALIDATORS.get("required_arguments"):
         validator(operation_type, params)
     return params
-
-
-def validate_storage_key(argument: str) -> None:
-    """Validate argument is str."""
-    for validator in VALIDATORS.get("argument"):
-        validator("argument", argument)
