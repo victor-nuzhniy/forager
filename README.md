@@ -34,15 +34,19 @@ Additionally, service supports crud methods for locally storing data
 
     initializer.initialize_service("api_key_got_from_hunter")
 
-    hunter = initializer.get_service()
+    initializer.initialize_async_service("api_key_got_from_hunter")
 
-    crud_service = initializer.get_crud_service()
+    hunter = initializer.service 
+
+    async_hunter = initializer.async_service
+
+    crud_service = initializer.crud_service
 
 ### Once initialized somewhere in the code you can get instances in different places without additional initialization
 
-    hunter = HunterService().get_service()
+    hunter = HunterService().service
 
-    crud_service = HunterService().get_crud_service()
+    crud_service = HunterService().crud_service
 
 ### All data stores in crud_service internal storage.
 
@@ -64,7 +68,7 @@ Additionally, service supports crud methods for locally storing data
 
 ### CRUD operations can be performed to manipulate received data
 
-    crud_service = HunterService().get_service()
+    crud_service = HunterService().crud_service
 
     crud_service.create("company_email", hunter.domain_search("company.com.ua"))
 
@@ -72,4 +76,4 @@ Additionally, service supports crud methods for locally storing data
 
     To run test firstly you need to install test dependency, then run
 
-        pytest --cov
+        pytest -cov
