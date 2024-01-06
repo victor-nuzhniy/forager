@@ -3,6 +3,7 @@ name = "forager_service"
 version = "0.1.0"
 description = "Hunter.io v2 api implementation"
 authors = ["victro-nuzhniy <nuzhniyva@gmail.com>"]
+repository = "https://github.com/victor-nuzhniy/forager.git"
 readme = "README.md"
 packages = [{include = "forager_service"}]
 
