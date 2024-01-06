@@ -6,52 +6,48 @@ from forager_service.exceptions import ArgumentValidationError
 from forager_service.services import create_and_validate_params
 
 
-class TestCreateAdnValidateParams:
+class TestCreateAdnValidateParams(object):
     """Class for testing create_and_validate_params."""
 
     def test_create_and_validate_params(self, faker: Faker, get_kwargs: dict) -> None:
         """Test create_and_validate_params."""
-        kwargs_dict: dict = get_kwargs
         operation_type: str = faker.random_element(
-            elements=("email-count", "email-verifier", "email-finder", "domain-search")
+            elements=("email-count", "email-verifier", "email-finder", "domain-search"),
         )
-        kwargs: dict = kwargs_dict.get(operation_type)
-        result = create_and_validate_params(operation_type, **kwargs)
-        for key, value in kwargs.items():
-            assert result[key] == value
+        kwargs: dict = get_kwargs.get(operation_type)
+        received_data = create_and_validate_params(operation_type, **kwargs)
+        for key, param_value in kwargs.items():
+            assert received_data[key] == param_value
 
     def test_create_and_validate_params_some_empty(self, faker: Faker, get_kwargs: dict) -> None:
         """Test create_and_validate_params."""
-        kwargs_dict: dict = get_kwargs
         operation_type: str = faker.random_element(elements=("email-count", "email-finder", "domain-search"))
-        kwargs: dict = kwargs_dict.get(operation_type)
-        number = faker.random_int(max=len(kwargs) - 1)
-        for i, key in enumerate(kwargs):
-            if i == number and key not in {"domain", "company"}:
-                kwargs[key] = None
-        result = create_and_validate_params(operation_type, **kwargs)
-        for key, value in kwargs.items():
-            if value is None:
-                assert key not in result
+        kwargs: dict = get_kwargs.get(operation_type)
+        key = faker.random_element(elements=kwargs.keys())
+        if key not in {"domain", "company"}:
+            kwargs[key] = None
+        received_data = create_and_validate_params(operation_type, **kwargs)
+        for key_value in kwargs.items():
+            if key_value[1] is None:
+                assert key_value[0] not in received_data
             else:
-                assert result[key] == value
+                assert received_data[key_value[0]] == key_value[1]
 
     def test_create_and_validate_params_error(self, faker: Faker, get_kwargs: dict) -> None:
         """Test create_and_validate_params."""
-        kwargs_dict: dict = get_kwargs
         operation_type: str = faker.random_element(
-            elements=("email-count", "email-verifier", "email-finder", "domain-search")
+            elements=("email-count", "email-verifier", "email-finder", "domain-search"),
         )
-        kwargs: dict = kwargs_dict.get(operation_type)
-        number = faker.random_int(max=len(kwargs) - 1)
-        for i, key in enumerate(kwargs):
-            if i == number:
-                kwargs[key] = set()
+        kwargs: dict = get_kwargs.get(operation_type)
+        key = faker.random_element(elements=kwargs.keys())
+        kwargs[key] = set()
         with pytest.raises(ArgumentValidationError):
             create_and_validate_params(operation_type, **kwargs)
 
-    def test_create_and_validate_params_error_required_arguments_email_finder(
-        self, faker: Faker, get_kwargs: dict
+    def test_create_and_validate_par_error_req_arg(
+        self,
+        faker: Faker,
+        get_kwargs: dict,
     ) -> None:
         """Test create_and_validate_params."""
         kwargs_dict: dict = get_kwargs
@@ -64,7 +60,7 @@ class TestCreateAdnValidateParams:
         with pytest.raises(ArgumentValidationError):
             create_and_validate_params(operation_type, **kwargs)
 
-    def test_create_and_validate_params_error_required_arguments(self, faker: Faker, get_kwargs: dict) -> None:
+    def test_create_and_validate_par_err_req(self, faker: Faker, get_kwargs: dict) -> None:
         """Test create_and_validate_params."""
         kwargs_dict: dict = get_kwargs
         operation_type: str = faker.random_element(elements=("email-count", "email-finder", "domain-search"))
