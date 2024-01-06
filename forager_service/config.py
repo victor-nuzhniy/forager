@@ -17,7 +17,7 @@ class CRUDService(object):
 
     def __new__(cls, *args, **kwargs) -> CRUDService:
         """Create new instance, if it's None, otherwise use earlier created one."""
-        if getattr(cls, "instance", None) is None:
+        if getattr(cls, 'instance', None) is None:
             cls.instance = super().__new__(cls, *args, **kwargs)
         return cls.instance
 
@@ -28,7 +28,7 @@ class CRUDService(object):
 
     def create(self, key: str, some_data: Any) -> None:
         """Save arbitrary some_data to storage."""
-        common_validators.validate_str("storage_key", key)
+        common_validators.validate_str('storage_key', key)
         if key in self._storage:
             raise ForagerKeyError(
                 'Key {key} already presents in storage. Use "update" to modify some_data.'.format(key=key),
@@ -37,12 +37,12 @@ class CRUDService(object):
 
     def read(self, key: str) -> Any:
         """Read value from storage by key."""
-        common_validators.validate_str("storage_key", key)
+        common_validators.validate_str('storage_key', key)
         return self._storage.get(key)
 
     def update(self, key: str, some_data: Any) -> None:
         """Update key some_data."""
-        common_validators.validate_str("storage_key", key)
+        common_validators.validate_str('storage_key', key)
         if key not in self._storage:
             raise ForagerKeyError(
                 'key {key} alreade presents in storage. Use "create" operation.'.format(key=key),
@@ -51,7 +51,7 @@ class CRUDService(object):
 
     def delete(self, key: str) -> Any:
         """Delete key some_data pair and return some_data."""
-        common_validators.validate_str("storage_key", key)
+        common_validators.validate_str('storage_key', key)
         return self._storage.pop(key, None)
 
 
@@ -64,7 +64,7 @@ class HunterService(object):
 
     def __new__(cls, *args, **kwargs) -> HunterService:
         """Create new instance, if it's None, otherwise use earlier created one."""
-        if getattr(cls, "instance", None) is None:
+        if getattr(cls, 'instance', None) is None:
             cls.instance = super().__new__(cls, *args, **kwargs)
         return cls.instance
 
@@ -98,7 +98,7 @@ class Service(object):
     def __init__(self, api_key: str) -> None:
         """Initialize service."""
         self.api_key: str = api_key
-        self.endpoint: str = "https://api.hunter.io/v2/"
+        self.endpoint: str = 'https://api.hunter.io/v2/'
 
     def domain_search(
         self,
@@ -127,10 +127,10 @@ class Service(object):
 
         :return: Full payload of the query as a dict, with email addresses found.
         """
-        operation: str = "domain-search"
+        operation: str = 'domain-search'
         param_dict: dict = create_and_validate_params(operation, domain=domain, company=company, **kwargs)
-        url: str = "{domain}{operation}".format(domain=self.endpoint, operation=operation)
-        param_dict["api_key"] = self.api_key
+        url: str = '{domain}{operation}'.format(domain=self.endpoint, operation=operation)
+        param_dict['api_key'] = self.api_key
         return self._perform_request(url, param_dict=param_dict, raw=raw)
 
     def email_finder(
@@ -156,15 +156,15 @@ class Service(object):
             accurate data. It must range between 3 and 20. The default is 10.
         :return: Full payload of the query as a dict, with email addresses found.
         """
-        operation: str = "email-finder"
+        operation: str = 'email-finder'
         param_dict: dict = create_and_validate_params(
             operation,
             domain=domain,
             company=company,
             **kwargs,
         )
-        url: str = "{endpoint}{operation}".format(endpoint=self.endpoint, operation=operation)
-        param_dict["api_key"] = self.api_key
+        url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
+        param_dict['api_key'] = self.api_key
         return self._perform_request(url, param_dict=param_dict, raw=raw)
 
     def verify_email(
@@ -179,13 +179,13 @@ class Service(object):
         :param raw: bool Gives back the entire response instead of just the 'data'.
         :return: Full payload of the query as a dict.
         """
-        operation: str = "email-verifier"
+        operation: str = 'email-verifier'
         param_dict: dict = create_and_validate_params(
             operation,
             email=email,
         )
-        url: str = "{endpoint}{operation}".format(endpoint=self.endpoint, operation=operation)
-        param_dict["api_key"] = self.api_key
+        url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
+        param_dict['api_key'] = self.api_key
         return self._perform_request(url, param_dict=param_dict, raw=raw)
 
     def email_count(
@@ -204,20 +204,20 @@ class Service(object):
         :param raw: bool Gives back the entire response instead of just the 'data'.
         :return: Full payload of the query as a dict.
         """
-        operation: str = "email-count"
+        operation: str = 'email-count'
         param_dict: dict = create_and_validate_params(
             operation,
             domain=domain,
             company=company,
             type=email_type,
         )
-        url: str = "{endpoint}{operation}".format(endpoint=self.endpoint, operation=operation)
+        url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
         return self._perform_request(url, param_dict=param_dict, raw=raw)
 
     def _perform_request(
         self,
         url: str,
-        method: str = "get",
+        method: str = 'get',
         raw: bool = False,
         **kwargs,
     ) -> dict | httpx.Response:
@@ -225,15 +225,15 @@ class Service(object):
         request = httpx.Request(
             method,
             url,
-            params=kwargs.get("param_dict"),
-            json=kwargs.get("payload"),
-            headers=kwargs.get("headers"),
+            params=kwargs.get('param_dict'),
+            json=kwargs.get('payload'),
+            headers=kwargs.get('headers'),
         )
         with httpx.Client() as client:
             response = client.send(request)
         if raw:
             return response
-        some_data: Optional[dict] = response.json().get("data")
+        some_data: Optional[dict] = response.json().get('data')
         if some_data is not None:
             return some_data
         raise ForagerAPIError(response.json())
@@ -245,7 +245,7 @@ class AsyncService(object):
     def __init__(self, api_key: str) -> None:
         """Initialize service."""
         self.api_key: str = api_key
-        self.endpoint: str = "https://api.hunter.io/v2/"
+        self.endpoint: str = 'https://api.hunter.io/v2/'
 
     async def domain_search(
         self,
@@ -274,15 +274,15 @@ class AsyncService(object):
 
         :return: Full payload of the query as a dict, with email addresses found.
         """
-        operation: str = "domain-search"
+        operation: str = 'domain-search'
         param_dict: dict = create_and_validate_params(
             operation,
             domain=domain,
             company=company,
             **kwargs,
         )
-        url: str = "{endpoint}{operation}".format(endpoint=self.endpoint, operation=operation)
-        param_dict["api_key"] = self.api_key
+        url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
+        param_dict['api_key'] = self.api_key
         return await self._perform_request(url, param_dict=param_dict, raw=raw)
 
     async def email_finder(
@@ -308,15 +308,15 @@ class AsyncService(object):
             accurate data. It must range between 3 and 20. The default is 10.
         :return: Full payload of the query as a dict, with email addresses found.
         """
-        operation: str = "email-finder"
+        operation: str = 'email-finder'
         param_dict: dict = create_and_validate_params(
             operation,
             domain=domain,
             company=company,
             **kwargs,
         )
-        url: str = "{endpoint}{operation}".format(endpoint=self.endpoint, operation=operation)
-        param_dict["api_key"] = self.api_key
+        url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
+        param_dict['api_key'] = self.api_key
         return await self._perform_request(url, param_dict=param_dict, raw=raw)
 
     async def verify_email(
@@ -331,13 +331,13 @@ class AsyncService(object):
         :param raw: bool Gives back the entire response instead of just the 'data'.
         :return: Full payload of the query as a dict.
         """
-        operation: str = "email-verifier"
+        operation: str = 'email-verifier'
         param_dict: dict = create_and_validate_params(
             operation,
             email=email,
         )
-        url: str = "{endpoint}{operation}".format(endpoint=self.endpoint, operation=operation)
-        param_dict["api_key"] = self.api_key
+        url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
+        param_dict['api_key'] = self.api_key
         return await self._perform_request(url, param_dict=param_dict, raw=raw)
 
     async def email_count(
@@ -356,20 +356,20 @@ class AsyncService(object):
         :param raw: bool Gives back the entire response instead of just the 'data'.
         :return: Full payload of the query as a dict.
         """
-        operation: str = "email-count"
+        operation: str = 'email-count'
         param_dict: dict = create_and_validate_params(
             operation,
             domain=domain,
             company=company,
             type=email_type,
         )
-        url: str = "{endpoint}{operation}".format(endpoint=self.endpoint, operation=operation)
+        url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
         return await self._perform_request(url, param_dict=param_dict, raw=raw)
 
     async def _perform_request(
         self,
         url: str,
-        method: str = "get",
+        method: str = 'get',
         raw: bool = False,
         **kwargs,
     ):
@@ -377,15 +377,15 @@ class AsyncService(object):
         request = httpx.Request(
             method,
             url,
-            params=kwargs.get("param_dict"),
-            json=kwargs.get("payload"),
-            headers=kwargs.get("headers"),
+            params=kwargs.get('param_dict'),
+            json=kwargs.get('payload'),
+            headers=kwargs.get('headers'),
         )
         async with httpx.AsyncClient() as client:
             response = await client.send(request)
         if raw:
             return response
-        some_data: Optional[dict] = response.json().get("data")
+        some_data: Optional[dict] = response.json().get('data')
         if some_data is not None:
             return some_data
         raise ForagerAPIError(response.json())
