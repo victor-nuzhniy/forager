@@ -1,6 +1,7 @@
 """Validators for arguments."""
 import re
 
+from forager_service.constants import OPERATIONS_ARGUMENTS
 from forager_service.exceptions import ArgumentValidationError
 
 
@@ -82,7 +83,7 @@ class Validators:
             + specials
             + "]+(?<!["
             + specials
-            + "])@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+            + "])@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}$"
         )
         if not re.fullmatch(regex, value):
             raise ArgumentValidationError(f"{key} has invalid value.")
@@ -92,17 +93,10 @@ class Validators:
         """Validate presence required argument in the list."""
         if key in {"domain-search", "email-finder", "email-count"}:
             if "domain" not in params and "company" not in params:
-                raise ArgumentValidationError(
-                    f"For {key} operation should be defined domain or company"
-                )
+                raise ArgumentValidationError(f"For {key} operation should be defined domain or company")
         if key == "email-finder":
-            if "full_name" not in params and (
-                "first_name" not in params or "last_name" not in params
-            ):
-                raise ArgumentValidationError(
-                    "At least first_name and last_name or full_name should"
-                    " be in params."
-                )
+            if "full_name" not in params and ("first_name" not in params or "last_name" not in params):
+                raise ArgumentValidationError("At least first_name and last_name or full_name should" " be in params.")
 
 
 VALIDATORS = {
@@ -122,3 +116,21 @@ VALIDATORS = {
     "email": (Validators.validate_str, Validators.validate_email),
     "argument": (Validators.validate_str,),
 }
+
+
+def validate_arguments(operation: str, arguments_dict: dict) -> None:
+    """Validate params in allowed list for the operation."""
+    arguments_set: set = OPERATIONS_ARGUMENTS.get(operation)
+    if arguments_set is None:
+        raise ArgumentValidationError("{op} is not allowed operation".format(op=operation))
+    for key in arguments_dict:
+        if key not in arguments_set:
+            raise ArgumentValidationError(
+                "Argument {arg} is not from arguments list for {op} operation".format(arg=key, op=operation)
+            )
+
+
+def validate_storage_key(argument: str) -> None:
+    """Validate argument is str."""
+    for validator in VALIDATORS.get("argument"):
+        validator("argument", argument)
