@@ -1,31 +1,21 @@
 """Exceptions for Forager project."""
 
 
-class ForagerException(Exception):
+class ForagerError(Exception):
     """General exception for project."""
 
-    pass
 
-
-class ArgumentError(ForagerException):
+class ArgumentError(ForagerError):
     """Error with not correct arguments."""
 
-    pass
 
-
-class ArgumentValidationError(ForagerException):
+class ArgumentValidationError(ForagerError):
     """Validation error, wrong type etc."""
 
-    pass
 
-
-class ForagerAPIError(ForagerException):
+class ForagerAPIError(ForagerError):
     """API error."""
 
-    pass
 
-
-class ForagerKeyError(ForagerException):
+class ForagerKeyError(ForagerError):
     """Error, if key presents in storage."""
-
-    pass
