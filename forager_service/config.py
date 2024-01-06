@@ -6,7 +6,7 @@ from typing import Any, Optional
 import httpx
 
 from forager_service.exceptions import ForagerAPIError, ForagerKeyError
-from forager_service.utils import create_and_validate_params
+from forager_service.services import create_and_validate_params
 from forager_service.validators import validate_storage_key
 
 
