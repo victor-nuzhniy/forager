@@ -1,8 +1,14 @@
 """Validators for arguments."""
 import re
 
-from forager_service.constants import OPERATIONS_ARGUMENTS
 from forager_service.exceptions import ArgumentValidationError
+
+operation_arguments = {
+    "domain-search": {"domain", "company", "limit", "offset", "type", "seniority", "department", "required_field"},
+    "email-finder": {"domain", "company", "first_name", "last_name", "full_name", "max_duration"},
+    "email-verifier": {"email"},
+    "email-count": {"domain", "company", "type"},
+}
 
 
 class CommonValidators(object):
@@ -99,7 +105,7 @@ class SpecialValidators(object):
 
     def validate_arguments(self, operation: str, arguments_dict: dict) -> None:
         """Validate params in allowed list for the operation."""
-        arguments_set: set = OPERATIONS_ARGUMENTS.get(operation)
+        arguments_set: set = operation_arguments.get(operation)
         if arguments_set is None:
             raise ArgumentValidationError("{op} is not allowed operation".format(op=operation))
         for key in arguments_dict:
