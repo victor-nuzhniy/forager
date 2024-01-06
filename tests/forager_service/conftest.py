@@ -8,14 +8,12 @@ def get_kwargs(faker: Faker) -> dict:
     """Create kwargs arguments for testing utils create_and_validate_params."""
     domain_search_dict: dict = {}
     email_finder_dict: dict = {}
-    email_verifier_dict: dict = {"email": faker.email()}
     email_count_dict: dict = {}
-    elements: list = faker.random_choices(elements=("domain", "company"))
-    for elem in elements:
+    for elem in faker.random_choices(elements=("domain", "company")):
         domain_search_dict[elem] = faker.city()
         email_finder_dict[elem] = faker.city()
         email_count_dict[elem] = faker.city()
-    domain_search_dict["limit"] = faker.random_int(min=3, max=20)
+    domain_search_dict["limit"] = faker.random_int(min=3)
     domain_search_dict["offset"] = faker.random_int()
     domain_search_dict["type"] = faker.random_element(elements=("personal", "generic"))
     email_count_dict["type"] = domain_search_dict["type"]
@@ -26,7 +24,7 @@ def get_kwargs(faker: Faker) -> dict:
             "executive",
             "junior, senior",
             "senior, junior, executive",
-        )
+        ),
     )
     domain_search_dict["department"] = ", ".join(
         faker.random_choices(
@@ -41,8 +39,8 @@ def get_kwargs(faker: Faker) -> dict:
                 "hr",
                 "marketing",
                 "communication",
-            )
-        )
+            ),
+        ),
     )
     domain_search_dict["required_field"] = ", ".join(
         faker.random_choices(
@@ -50,21 +48,22 @@ def get_kwargs(faker: Faker) -> dict:
                 "full_name",
                 "position",
                 "phone_number",
-            )
-        )
+            ),
+        ),
     )
     email_finder_dict["first_name"] = faker.first_name()
     email_finder_dict["last_name"] = faker.last_name()
-    email_finder_dict["full_name"] = f"{faker.first_name()} {faker.last_name()}"
-    email_finder_dict["max_duration"] = faker.random_int(min=3, max=20)
+    email_finder_dict["full_name"] = faker.last_name()
+    high_limit: int = 20
+    email_finder_dict["max_duration"] = faker.random_int(min=3, max=high_limit)
     return {
         "domain-search": domain_search_dict,
         "email-finder": email_finder_dict,
-        "email-verifier": email_verifier_dict,
+        "email-verifier": {"email": faker.email()},
         "email-count": email_count_dict,
     }
 
 
-def get_query(x, **kwargs) -> tuple:
+def get_query(some_variable, **kwargs) -> tuple:
     """Return given arguments."""
-    return x, kwargs
+    return some_variable, kwargs
