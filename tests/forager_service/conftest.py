@@ -65,6 +65,6 @@ def get_kwargs(faker: Faker) -> dict:
     }
 
 
-def get_query(x, y, **kwargs) -> tuple:
+def get_query(x, **kwargs) -> tuple:
     """Return given arguments."""
-    return x, y, kwargs
+    return x, kwargs
