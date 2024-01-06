@@ -11,7 +11,7 @@ A python wrapper for the Hunter.io v2 api with additinal crud service.
 
 ### To install
 
-   pip install forager_service
+   pip install forager_service==0.1.1
 
 ## Usage
 
@@ -28,7 +28,7 @@ Additionally, service supports crud methods for locally storing data
 
 ### Import service and instantiate it once
 
-    from config import HunterService
+    from forager_service.config import HunterService
 
     initializer = HunterService()
 
