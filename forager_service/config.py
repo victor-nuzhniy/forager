@@ -7,7 +7,7 @@ import httpx
 
 from forager_service.exceptions import ForagerAPIError, ForagerKeyError
 from forager_service.services import create_and_validate_params
-from forager_service.validators import validators
+from forager_service.validators import common_validators
 
 
 class CRUDService(object):
@@ -28,7 +28,7 @@ class CRUDService(object):
 
     def create(self, key: str, some_data: Any) -> None:
         """Save arbitrary some_data to storage."""
-        validators.validate_str(key)
+        common_validators.validate_str("storage_key", key)
         if key in self._storage:
             raise ForagerKeyError(
                 'Key {key} already presents in storage. Use "update" to modify some_data.'.format(key=key),
@@ -37,12 +37,12 @@ class CRUDService(object):
 
     def read(self, key: str) -> Any:
         """Read value from storage by key."""
-        validators.validate_str(key)
+        common_validators.validate_str("storage_key", key)
         return self._storage.get(key)
 
     def update(self, key: str, some_data: Any) -> None:
         """Update key some_data."""
-        validators.validate_str(key)
+        common_validators.validate_str("storage_key", key)
         if key not in self._storage:
             raise ForagerKeyError(
                 'key {key} alreade presents in storage. Use "create" operation.'.format(key=key),
@@ -51,7 +51,7 @@ class CRUDService(object):
 
     def delete(self, key: str) -> Any:
         """Delete key some_data pair and return some_data."""
-        validators.validate_str(key)
+        common_validators.validate_str("storage_key", key)
         return self._storage.pop(key, None)
 
 
