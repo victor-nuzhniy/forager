@@ -6,17 +6,20 @@ from faker import Faker
 @pytest.fixture
 def get_kwargs(faker: Faker) -> dict:
     """Create kwargs arguments for testing utils create_and_validate_params."""
-    kwargs: dict = dict()
+    domain_search_dict: dict = {}
+    email_finder_dict: dict = {}
+    email_verifier_dict: dict = {"email": faker.email()}
+    email_count_dict: dict = {}
     elements: list = faker.random_choices(elements=("domain", "company"))
     for elem in elements:
-        kwargs[elem] = faker.city()
-    limit: int = faker.random_int(min=3, max=20)
-    kwargs["limit"] = limit
-    offset: int = faker.random_int()
-    kwargs["offset"] = offset
-    email_type: str = faker.random_element(elements=("personal", "generic"))
-    kwargs["type"] = email_type
-    seniority: str = faker.random_element(
+        domain_search_dict[elem] = faker.city()
+        email_finder_dict[elem] = faker.city()
+        email_count_dict[elem] = faker.city()
+    domain_search_dict["limit"] = faker.random_int(min=3, max=20)
+    domain_search_dict["offset"] = faker.random_int()
+    domain_search_dict["type"] = faker.random_element(elements=("personal", "generic"))
+    email_count_dict["type"] = domain_search_dict["type"]
+    domain_search_dict["seniority"] = faker.random_element(
         elements=(
             "junior",
             "senior",
@@ -25,8 +28,7 @@ def get_kwargs(faker: Faker) -> dict:
             "senior, junior, executive",
         )
     )
-    kwargs["seniority"] = seniority
-    department: str = ", ".join(
+    domain_search_dict["department"] = ", ".join(
         faker.random_choices(
             elements=(
                 "executive",
@@ -42,8 +44,7 @@ def get_kwargs(faker: Faker) -> dict:
             )
         )
     )
-    kwargs["department"] = department
-    required_field: str = ", ".join(
+    domain_search_dict["required_field"] = ", ".join(
         faker.random_choices(
             elements=(
                 "full_name",
@@ -52,20 +53,16 @@ def get_kwargs(faker: Faker) -> dict:
             )
         )
     )
-    kwargs["required_field"] = required_field
-    first_name: str = faker.first_name()
-    kwargs["first_name"] = first_name
-    last_name: str = faker.last_name()
-    kwargs["last_name"] = last_name
-    full_name: str = f"{faker.first_name()} {faker.last_name()}"
-    kwargs["full_name"] = full_name
-    max_duration: int = faker.random_int(min=3, max=20)
-    kwargs["max_duration"] = max_duration
-    email: str = faker.email()
-    kwargs["email"] = email
-    argument: str = faker.city()
-    kwargs["argument"] = argument
-    return kwargs
+    email_finder_dict["first_name"] = faker.first_name()
+    email_finder_dict["last_name"] = faker.last_name()
+    email_finder_dict["full_name"] = f"{faker.first_name()} {faker.last_name()}"
+    email_finder_dict["max_duration"] = faker.random_int(min=3, max=20)
+    return {
+        "domain-search": domain_search_dict,
+        "email-finder": email_finder_dict,
+        "email-verifier": email_verifier_dict,
+        "email-count": email_count_dict,
+    }
 
 
 def get_query(x, y, **kwargs) -> tuple:
