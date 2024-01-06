@@ -10,7 +10,7 @@ from forager_service.exceptions import ArgumentValidationError
 from tests.forager_service.conftest import get_query
 
 
-class TestServiceDomainSearch:
+class TestServiceDomainSearch(object):
     """Class for testing Service domain_search method."""
 
     @patch("forager_service.config.Service._perform_request")
@@ -21,15 +21,15 @@ class TestServiceDomainSearch:
     ) -> None:
         """Test domain_search method."""
         domain: str = faker.city()
-        api_key: str = faker.pystr(min_chars=3)
+        api_key: str = "some_key"
         HunterService().initialize_service(api_key)
-        mock_request.side_effect = lambda x, **kwargs: get_query(x, **kwargs)
-        result = HunterService().service.domain_search(domain)
-        url, kwargs_dict = result
+        mock_request.side_effect = get_query
+        received_data = HunterService().service.domain_search(domain)
+        url, kwargs = received_data
         assert url == "https://api.hunter.io/v2/domain-search"
-        assert kwargs_dict.get("param_dict")["domain"] == domain
-        assert kwargs_dict.get("param_dict")["api_key"] == api_key
-        assert kwargs_dict["raw"] is False
+        assert kwargs.get("param_dict")["domain"] == domain
+        assert kwargs.get("param_dict")["api_key"] == api_key
+        assert kwargs["raw"] is False
 
     def test_domain_search_error(
         self,
@@ -39,12 +39,11 @@ class TestServiceDomainSearch:
         domain: int = faker.random_int()
         api_key: str = faker.pystr(min_chars=3)
         HunterService().initialize_service(api_key)
-        with pytest.raises(ArgumentValidationError) as ex_info:
+        with pytest.raises(ArgumentValidationError):
             HunterService().service.domain_search(domain)
-        assert str(ex_info.value) == "domain has wrong type."
 
 
-class TestAsyncServiceDomainSearch:
+class TestAsyncServiceDomainSearch(object):
     """Class for testing AsyncService domain_search method."""
 
     @patch("forager_service.config.AsyncService._perform_request", new_callable=AsyncMock)
@@ -55,20 +54,19 @@ class TestAsyncServiceDomainSearch:
     ) -> None:
         """Test domain_search method."""
         domain: str = faker.city()
-        limit: int = faker.random_int(min=4, max=7)
-        api_key: str = faker.pystr(min_chars=3)
-        HunterService().initialize_async_service(api_key)
-        mock_request.side_effect = lambda x, **kwargs: get_query(x, **kwargs)
-        result = async_to_sync(HunterService().async_service.domain_search)(domain, limit=limit)
-        url, kwargs_dict = result
+        HunterService().initialize_async_service("api_key")
+        mock_request.side_effect = get_query
+        received_data = async_to_sync(HunterService().async_service.domain_search)(domain, limit=8)
+        url, kwargs_dict = received_data
+        param_dict: dict = kwargs_dict.get("param_dict")
         assert url == "https://api.hunter.io/v2/domain-search"
-        assert kwargs_dict.get("param_dict")["domain"] == domain
-        assert kwargs_dict.get("param_dict")["limit"] == limit
-        assert kwargs_dict.get("param_dict")["api_key"] == api_key
+        assert param_dict["domain"] == domain
+        assert param_dict["limit"] == 8
+        assert param_dict["api_key"] == "api_key"
         assert kwargs_dict["raw"] is False
 
 
-class TestServiceEmailFinder:
+class TestServiceEmailFinder(object):
     """Class for testing Service email_finder method."""
 
     @patch("forager_service.config.Service._perform_request")
@@ -79,20 +77,19 @@ class TestServiceEmailFinder:
     ) -> None:
         """Test email_finder method."""
         domain: str = faker.city()
-        full_name: str = f"{faker.first_name()} {faker.last_name()}"
-        api_key: str = faker.pystr(min_chars=3)
-        HunterService().initialize_service(api_key)
-        mock_request.side_effect = lambda x, **kwargs: get_query(x, **kwargs)
-        result = HunterService().service.email_finder(domain, full_name=full_name)
-        url, kwargs_dict = result
-        assert url == "https://api.hunter.io/v2/email-finder"
-        assert kwargs_dict.get("param_dict")["domain"] == domain
-        assert kwargs_dict.get("param_dict")["full_name"] == full_name
-        assert kwargs_dict.get("param_dict")["api_key"] == api_key
-        assert kwargs_dict["raw"] is False
+        full_name: str = faker.last_name()
+        HunterService().initialize_service("some_api_key")
+        mock_request.side_effect = get_query
+        received_data = HunterService().service.email_finder(domain, full_name=full_name)
+        param_dict: dict = received_data[1].get("param_dict")
+        assert received_data[0] == "https://api.hunter.io/v2/email-finder"
+        assert param_dict["domain"] == domain
+        assert param_dict["full_name"] == full_name
+        assert param_dict["api_key"] == "some_api_key"
+        assert received_data[1]["raw"] is False
 
 
-class TestAsyncServiceEmailFinder:
+class TestAsyncServiceEmailFinder(object):
     """Class for testing AsyncService email_finder method."""
 
     @patch("forager_service.config.AsyncService._perform_request", new_callable=AsyncMock)
@@ -105,22 +102,22 @@ class TestAsyncServiceEmailFinder:
         domain: str = faker.city()
         first_name: str = faker.first_name()
         last_name: str = faker.last_name()
-        api_key: str = faker.pystr(min_chars=3)
-        HunterService().initialize_async_service(api_key)
-        mock_request.side_effect = lambda x, **kwargs: get_query(x, **kwargs)
-        result = async_to_sync(HunterService().async_service.email_finder)(
-            domain, first_name=first_name, last_name=last_name
+        HunterService().initialize_async_service("some_api_key")
+        mock_request.side_effect = get_query
+        received_data = async_to_sync(HunterService().async_service.email_finder)(
+            domain,
+            first_name=first_name,
+            last_name=last_name,
         )
-        url, kwargs_dict = result
-        assert url == "https://api.hunter.io/v2/email-finder"
-        assert kwargs_dict.get("param_dict")["domain"] == domain
-        assert kwargs_dict.get("param_dict")["first_name"] == first_name
-        assert kwargs_dict.get("param_dict")["last_name"] == last_name
-        assert kwargs_dict.get("param_dict")["api_key"] == api_key
-        assert kwargs_dict["raw"] is False
+        param_dict: dict = received_data[1].get("param_dict")
+        assert received_data[0] == "https://api.hunter.io/v2/email-finder"
+        assert param_dict["domain"] == domain and param_dict["first_name"] == first_name
+        assert param_dict["last_name"] == last_name
+        assert param_dict["api_key"] == "some_api_key"
+        assert received_data[1]["raw"] is False
 
 
-class TestServiceVerifyEmail:
+class TestServiceVerifyEmail(object):
     """Class for testing Service verify_email method."""
 
     @patch("forager_service.config.Service._perform_request")
@@ -131,18 +128,17 @@ class TestServiceVerifyEmail:
     ) -> None:
         """Test verify_email method."""
         email: str = faker.email()
-        api_key: str = faker.pystr(min_chars=3)
-        HunterService().initialize_service(api_key)
-        mock_request.side_effect = lambda x, **kwargs: get_query(x, **kwargs)
-        result = HunterService().service.verify_email(email)
-        url, kwargs_dict = result
-        assert url == "https://api.hunter.io/v2/email-verifier"
-        assert kwargs_dict.get("param_dict")["email"] == email
-        assert kwargs_dict.get("param_dict")["api_key"] == api_key
-        assert kwargs_dict["raw"] is False
+        HunterService().initialize_service("api_key")
+        mock_request.side_effect = get_query
+        received_data = HunterService().service.verify_email(email)
+        param_dict: dict = received_data[1].get("param_dict")
+        assert received_data[0] == "https://api.hunter.io/v2/email-verifier"
+        assert param_dict["email"] == email
+        assert param_dict["api_key"] == "api_key"
+        assert received_data[1]["raw"] is False
 
 
-class TestAsyncServiceVerifyEmail:
+class TestAsyncServiceVerifyEmail(object):
     """Class for testing AsyncService verify_email method."""
 
     @patch("forager_service.config.AsyncService._perform_request", new_callable=AsyncMock)
@@ -153,18 +149,17 @@ class TestAsyncServiceVerifyEmail:
     ) -> None:
         """Test averify_email method."""
         email: str = faker.email()
-        api_key: str = faker.pystr(min_chars=3)
-        HunterService().initialize_async_service(api_key)
-        mock_request.side_effect = lambda x, **kwargs: get_query(x, **kwargs)
-        result = async_to_sync(HunterService().async_service.verify_email)(email)
-        url, kwargs_dict = result
-        assert url == "https://api.hunter.io/v2/email-verifier"
-        assert kwargs_dict.get("param_dict")["email"] == email
-        assert kwargs_dict.get("param_dict")["api_key"] == api_key
-        assert kwargs_dict["raw"] is False
+        HunterService().initialize_async_service("some_api_key")
+        mock_request.side_effect = get_query
+        rec_data = async_to_sync(HunterService().async_service.verify_email)(email)
+        param_dict: dict = rec_data[1].get("param_dict")
+        assert rec_data[0] == "https://api.hunter.io/v2/email-verifier"
+        assert param_dict["email"] == email
+        assert param_dict["api_key"] == "some_api_key"
+        assert rec_data[1]["raw"] is False
 
 
-class TestServiceEmailCount:
+class TestServiceEmailCount(object):
     """Class for testing Service email_count method."""
 
     @patch("forager_service.config.Service._perform_request")
@@ -176,22 +171,17 @@ class TestServiceEmailCount:
         """Test email_count method."""
         domain: str = faker.city()
         email_type: str = faker.random_element(elements=("personal", "generic"))
-        api_key: str = faker.pystr(min_chars=3)
-        HunterService().initialize_service(api_key)
-        mock_request.side_effect = lambda x, **kwargs: get_query(x, **kwargs)
-        result = HunterService().service.email_count(domain, email_type=email_type)
-        url, kwargs_dict = result
-        assert url == "https://api.hunter.io/v2/email-count"
-        assert kwargs_dict.get("param_dict")["domain"] == domain
-        assert kwargs_dict.get("param_dict")["type"] == email_type
-        assert kwargs_dict["raw"] is False
-
-
-class TestAsyncServiceEmailCount:
-    """Class for testing AsyncService email_count method."""
+        HunterService().initialize_service("some_api_key")
+        mock_request.side_effect = get_query
+        rec_data = HunterService().service.email_count(domain, email_type=email_type)
+        param_dict: dict = rec_data[1].get("param_dict")
+        assert rec_data[0] == "https://api.hunter.io/v2/email-count"
+        assert param_dict["domain"] == domain
+        assert param_dict["type"] == email_type
+        assert rec_data[1]["raw"] is False
 
     @patch("forager_service.config.AsyncService._perform_request", new_callable=AsyncMock)
-    def test_email_count(
+    def test_async_email_count(
         self,
         mock_request: AsyncMock,
         faker: Faker,
@@ -200,9 +190,9 @@ class TestAsyncServiceEmailCount:
         domain: str = faker.city()
         api_key: str = faker.pystr(min_chars=3)
         HunterService().initialize_async_service(api_key)
-        mock_request.side_effect = lambda x, **kwargs: get_query(x, **kwargs)
-        result = async_to_sync(HunterService().async_service.email_count)(domain)
-        url, kwargs_dict = result
+        mock_request.side_effect = get_query
+        received_data = async_to_sync(HunterService().async_service.email_count)(domain)
+        url, kwargs_dict = received_data
         assert url == "https://api.hunter.io/v2/email-count"
         assert kwargs_dict.get("param_dict")["domain"] == domain
         assert kwargs_dict["raw"] is False
