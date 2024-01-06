@@ -36,7 +36,7 @@ class CommonValidators(object):
             + "])@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}$",
         )
         if not re.fullmatch(regex, param_value):
-            raise ArgumentValidationError("{key} has invalid param_value.".format(key=key))
+            raise ArgumentValidationError("{key} has invalid value.".format(key=key))
 
 
 common_validators = CommonValidators()
@@ -48,14 +48,14 @@ class KwargsValidators(object):
     def validate_email_type(self, key: str, param_value: str) -> None:
         """Validate email type."""
         if param_value not in {"personal", "generic"}:
-            raise ArgumentValidationError("{key} has wrong param_value.".format(key=key))
+            raise ArgumentValidationError("{key} has wrong value.".format(key=key))
 
     def validate_seniority(self, key: str, param_value: str) -> None:
         """Validate seniority kwarg."""
         value_list: list = param_value.split(", ")
         for elem in value_list:
             if elem not in {"junior", "senior", "executive"}:
-                raise ArgumentValidationError("{key} has wrong param_value.".format(key=key))
+                raise ArgumentValidationError("{key} has wrong value.".format(key=key))
 
     def validate_department(self, key: str, param_value: str) -> None:
         """Validate department param_value."""
@@ -74,20 +74,20 @@ class KwargsValidators(object):
         }
         for elem in value_list:
             if elem not in sample_set:
-                raise ArgumentValidationError("{key} has wrong param_value.".format(key=key))
+                raise ArgumentValidationError("{key} has wrong value.".format(key=key))
 
     def validate_required_field(self, key: str, param_value: str) -> None:
         """Validate required field argument."""
         value_list: list = param_value.split(", ")
         for elem in value_list:
             if elem not in {"full_name", "position", "phone_number"}:
-                raise ArgumentValidationError("{key} has wrong param_value.".format(key=key))
+                raise ArgumentValidationError("{key} has wrong value.".format(key=key))
 
     def validate_max_duration(self, key: str, param_value: int) -> None:
         """Validate max duration param_value."""
         high_limit: int = 20
         low_limit: int = 3
-        if high_limit < param_value < low_limit:
+        if high_limit < param_value or param_value < low_limit:
             raise ArgumentValidationError("{key} should be in range from 3 to 20.".format(key=key))
 
 
