@@ -12,7 +12,7 @@ from tests.forager_service.conftest import get_query
 class TestServiceDomainSearch(object):
     """Class for testing Service domain_search method."""
 
-    @patch('forager_service.config.Service._perform_request')
+    @patch('forager_service.app_services.service.Service._perform_request')
     def test_domain_search(
         self,
         mock_request: MagicMock,
@@ -45,7 +45,7 @@ class TestServiceDomainSearch(object):
 class TestServiceEmailFinder(object):
     """Class for testing Service email_finder method."""
 
-    @patch('forager_service.config.Service._perform_request')
+    @patch('forager_service.app_services.service.Service._perform_request')
     def test_email_finder(
         self,
         mock_request: MagicMock,
@@ -68,7 +68,7 @@ class TestServiceEmailFinder(object):
 class TestServiceVerifyEmail(object):
     """Class for testing Service verify_email method."""
 
-    @patch('forager_service.config.Service._perform_request')
+    @patch('forager_service.app_services.service.Service._perform_request')
     def test_verify_email(
         self,
         mock_request: MagicMock,
@@ -89,7 +89,7 @@ class TestServiceVerifyEmail(object):
 class TestServiceEmailCount(object):
     """Class for testing Service email_count method."""
 
-    @patch('forager_service.config.Service._perform_request')
+    @patch('forager_service.app_services.service.Service._perform_request')
     def test_email_count(
         self,
         mock_request: MagicMock,

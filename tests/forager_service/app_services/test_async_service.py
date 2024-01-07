@@ -11,7 +11,7 @@ from tests.forager_service.conftest import get_query
 class TestAsyncServiceDomainSearch(object):
     """Class for testing AsyncService domain_search method."""
 
-    @patch('forager_service.config.AsyncService._perform_request', new_callable=AsyncMock)
+    @patch('forager_service.app_services.async_service.AsyncService._perform_request', new_callable=AsyncMock)
     def test_adomain_search(
         self,
         mock_request: AsyncMock,
@@ -34,7 +34,7 @@ class TestAsyncServiceDomainSearch(object):
 class TestAsyncServiceEmailFinder(object):
     """Class for testing AsyncService email_finder method."""
 
-    @patch('forager_service.config.AsyncService._perform_request', new_callable=AsyncMock)
+    @patch('forager_service.app_services.async_service.AsyncService._perform_request', new_callable=AsyncMock)
     def test_aemail_finder(
         self,
         mock_request: AsyncMock,
@@ -62,7 +62,7 @@ class TestAsyncServiceEmailFinder(object):
 class TestAsyncServiceVerifyEmail(object):
     """Class for testing AsyncService verify_email method."""
 
-    @patch('forager_service.config.AsyncService._perform_request', new_callable=AsyncMock)
+    @patch('forager_service.app_services.async_service.AsyncService._perform_request', new_callable=AsyncMock)
     def test_averify_email(
         self,
         mock_request: AsyncMock,
@@ -83,7 +83,7 @@ class TestAsyncServiceVerifyEmail(object):
 class TestAsyncServiceEmailCount(object):
     """Class for testing Service email_count method."""
 
-    @patch('forager_service.config.AsyncService._perform_request', new_callable=AsyncMock)
+    @patch('forager_service.app_services.async_service.AsyncService._perform_request', new_callable=AsyncMock)
     def test_async_email_count(
         self,
         mock_request: AsyncMock,
