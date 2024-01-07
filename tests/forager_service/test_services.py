@@ -2,8 +2,8 @@
 import pytest
 from faker import Faker
 
-from forager_service.app_services.exceptions import ArgumentValidationError
-from forager_service.app_services.services import create_and_validate_params
+from forager_service.common.common_utilities import create_and_validate_params
+from forager_service.common.exceptions import ArgumentValidationError
 
 
 class TestCreateAdnValidateParams(object):
