@@ -2,8 +2,11 @@
 import pytest
 from faker import Faker
 
-from forager_service.exceptions import ArgumentValidationError
-from forager_service.validators import kwargs_validators, special_validators
+from forager_service.app_services.exceptions import ArgumentValidationError
+from forager_service.app_services.validators import (
+    kwargs_validators,
+    special_validators,
+)
 
 
 class TestValidatorsValidateEmailType(object):

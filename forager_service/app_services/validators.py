@@ -1,7 +1,7 @@
 """Validators for arguments."""
 import re
 
-from forager_service.exceptions import ArgumentValidationError
+from forager_service.app_services.exceptions import ArgumentValidationError
 
 operation_arguments = {
     'domain-search': {'domain', 'company', 'limit', 'offset', 'type', 'seniority', 'department', 'required_field'},

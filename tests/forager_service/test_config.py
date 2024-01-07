@@ -5,7 +5,7 @@ import pytest
 from asgiref.sync import async_to_sync
 from faker import Faker
 
-from forager_service.exceptions import ArgumentValidationError
+from forager_service.app_services.exceptions import ArgumentValidationError
 from forager_service.hunter import HunterService
 from tests.forager_service.conftest import get_query
 
