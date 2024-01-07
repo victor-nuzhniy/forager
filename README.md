@@ -11,7 +11,7 @@ A python wrapper for the Hunter.io v2 api with additinal crud service.
 
 ### To install
 
-   pip install forager_service==0.1.1
+   pip install forager_service==0.1.2
 
 ## Usage
 
