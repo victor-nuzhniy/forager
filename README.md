@@ -28,7 +28,7 @@ Additionally, service supports crud methods for locally storing data
 
 ### Import service and instantiate it once
 
-    from forager_service.config import HunterService
+    from forager_service.hunter import HunterService
 
     initializer = HunterService()
 
@@ -67,9 +67,21 @@ Additionally, service supports crud methods for locally storing data
 
 ### CRUD operations can be performed to manipulate received data
 
+    from forager_service.app_services.crud_service import CRUDService
+
     crud_service = CRUDService()
 
     crud_service.create("company_email", hunter.domain_search("company.com.ua"))
+
+### To collect email validation and other info use email_verify_record_handler. Data will be saved in local storage.
+
+    from forager_service.operation_handlers.email_verify_record_handler import EmailVerifyCRUDHandler
+
+    email_handler = EmailVerifyCRUDHandler()
+
+    email_handler.create_email_record("some_email@company.com")
+
+    email_handler.read("another@company.com")
 
 ## Tests
 
