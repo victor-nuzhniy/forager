@@ -4,7 +4,6 @@ from __future__ import annotations
 from typing import Optional
 
 from forager_service.app_services.async_service import AsyncService
-from forager_service.app_services.crud_service import CRUDService
 from forager_service.app_services.service import Service
 
 
@@ -13,7 +12,6 @@ class HunterService(object):
 
     _hunter_service: Optional[Service] = None
     _async_hunter_service: Optional[AsyncService] = None
-    _crud_service: CRUDService = CRUDService()
 
     def __new__(cls, *args, **kwargs) -> HunterService:
         """Create new instance, if it's None, otherwise use earlier created one."""
@@ -38,8 +36,3 @@ class HunterService(object):
     def async_service(self) -> AsyncService:
         """Get hunter service instance."""
         return self._async_hunter_service
-
-    @property
-    def crud_service(self) -> CRUDService:
-        """Get CRUDService instance."""
-        return self._crud_service

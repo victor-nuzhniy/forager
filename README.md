@@ -40,13 +40,12 @@ Additionally, service supports crud methods for locally storing data
 
     async_hunter = initializer.async_service
 
-    crud_service = initializer.crud_service
 
 ### Once initialized somewhere in the code you can get instances in different places without additional initialization
 
     hunter = HunterService().service
 
-    crud_service = HunterService().crud_service
+    async_hunter = HunterService().async_service
 
 ### All data stores in crud_service internal storage.
 
@@ -60,7 +59,7 @@ Additionally, service supports crud methods for locally storing data
 
 ### Find email address
 
-    hunter.email_finder("pmr", full_name="Sergiy Petrov", raw=True)
+    hunter.email_finder(compayny="pmr", full_name="Sergiy Petrov", raw=True)
 
 ### Check email deliverabelity
 
@@ -68,7 +67,7 @@ Additionally, service supports crud methods for locally storing data
 
 ### CRUD operations can be performed to manipulate received data
 
-    crud_service = HunterService().crud_service
+    crud_service = CRUDService()
 
     crud_service.create("company_email", hunter.domain_search("company.com.ua"))
 
