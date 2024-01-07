@@ -12,7 +12,7 @@ class CRUDService(object):
 
     _storage: dict = {}
 
-    def __new__(cls, *args, **kwargs) -> CRUDService:
+    def __new__(cls, *args: Any, **kwargs: Any) -> CRUDService:
         """Create new instance, if it's None, otherwise use earlier created one."""
         if getattr(cls, 'instance', None) is None:
             cls.instance = super().__new__(cls, *args, **kwargs)

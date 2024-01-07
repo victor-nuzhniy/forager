@@ -1,7 +1,7 @@
 """Service for Forager project."""
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 import httpx
 
@@ -22,8 +22,8 @@ class Service(object):
         domain: Optional[str] = None,
         company: Optional[str] = None,
         raw: bool = False,
-        **kwargs,
-    ) -> dict:
+        **kwargs: Any,
+    ) -> dict | httpx.Response:
         """
         Perform domain_research request. Return all found email addresses.
 
@@ -55,8 +55,8 @@ class Service(object):
         domain: Optional[str] = None,
         company: Optional[str] = None,
         raw: bool = False,
-        **kwargs,
-    ) -> dict:
+        **kwargs: Any,
+    ) -> dict | httpx.Response:
         """
         Find the most likely email address from a domain name, first and a last name.
 
@@ -88,7 +88,7 @@ class Service(object):
         self,
         email: str,
         raw: bool = False,
-    ) -> dict:
+    ) -> dict | httpx.Response:
         """
         Verify the deliverability of an email address.
 
@@ -111,7 +111,7 @@ class Service(object):
         company: Optional[str] = None,
         email_type: Optional[str] = None,
         raw: bool = False,
-    ) -> dict:
+    ) -> dict | httpx.Response:
         """
         Count emails for domain or company.
 
@@ -136,7 +136,7 @@ class Service(object):
         url: str,
         method: str = 'get',
         raw: bool = False,
-        **kwargs,
+        **kwargs: Any,
     ) -> dict | httpx.Response:
         """Perform http request."""
         request = httpx.Request(
@@ -147,7 +147,7 @@ class Service(object):
             headers=kwargs.get('headers'),
         )
         with httpx.Client() as client:
-            response = client.send(request)
+            response: httpx.Response = client.send(request)
         if raw:
             return response
         some_data: Optional[dict] = response.json().get('data')

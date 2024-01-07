@@ -1,5 +1,6 @@
 """Validators for arguments."""
 import re
+from typing import Callable, Union
 
 from forager_service.common.exceptions import ArgumentValidationError
 
@@ -105,7 +106,7 @@ class SpecialValidators(object):
 
     def validate_arguments(self, operation: str, arguments_dict: dict) -> None:
         """Validate params in allowed list for the operation."""
-        arguments_set: set = operation_arguments.get(operation)
+        arguments_set: set[str] | None = operation_arguments.get(operation)
         if arguments_set is None:
             raise ArgumentValidationError('{op} is not allowed operation'.format(op=operation))
         for key in arguments_dict:
@@ -133,12 +134,14 @@ class SpecialValidators(object):
 
 special_validators = SpecialValidators()
 
+Dict_A = dict[str, Union[str, int]]
+Callable_A = Callable[[str, Dict_A], None]
+Callable_B = Callable[[str, str], None]
+Callable_C = Callable[[str, int], None]
+Tuple_A = tuple[Callable_B, ...]
+Tuple_B = tuple[Callable_C, ...]
 
-validators = {
-    'required_arguments': (
-        special_validators.validate_required_arguments,
-        special_validators.validate_email_finder_required_argument,
-    ),
+validators: dict[str, Union[Tuple_A, Tuple_B]] = {
     'domain': (common_validators.validate_str,),
     'company': (common_validators.validate_str,),
     'limit': (common_validators.validate_int,),
@@ -152,4 +155,12 @@ validators = {
     'full_name': (common_validators.validate_str,),
     'max_duration': (common_validators.validate_int, kwargs_validators.validate_max_duration),
     'email': (common_validators.validate_str, common_validators.validate_email),
+}
+
+
+params_validators: dict[str, tuple[Callable_A, Callable_A]] = {
+    'required_arguments': (
+        special_validators.validate_required_arguments,
+        special_validators.validate_email_finder_required_argument,
+    ),
 }

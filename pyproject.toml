@@ -21,6 +21,8 @@ xenon = "^0.9.1"
 pre-commit = "^3.6.0"
 wemake-python-styleguide = "^0.18.0"
 flake8-docstrings = "^1.7.0"
+mypy = "^1.8.0"
+pydantic = "^2.5.3"
 
 [tool.poetry.group.test]
 optional = true

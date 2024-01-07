@@ -1,7 +1,7 @@
 """AsyncService for Forager project."""
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 import httpx
 
@@ -22,8 +22,8 @@ class AsyncService(object):
         domain: Optional[str] = None,
         company: Optional[str] = None,
         raw: bool = False,
-        **kwargs,
-    ) -> dict:
+        **kwargs: Any,
+    ) -> dict | httpx.Response:
         """
         Perform domain_research request. Return all found email addresses.
 
@@ -60,8 +60,8 @@ class AsyncService(object):
         domain: Optional[str] = None,
         company: Optional[str] = None,
         raw: bool = False,
-        **kwargs,
-    ) -> dict:
+        **kwargs: Any,
+    ) -> dict | httpx.Response:
         """
         Find the most likely email address from a domain name, first and a last name.
 
@@ -93,7 +93,7 @@ class AsyncService(object):
         self,
         email: str,
         raw: bool = False,
-    ) -> dict:
+    ) -> dict | httpx.Response:
         """
         Verify the deliverability of an email address.
 
@@ -116,7 +116,7 @@ class AsyncService(object):
         company: Optional[str] = None,
         email_type: Optional[str] = None,
         raw: bool = False,
-    ) -> dict:
+    ) -> dict | httpx.Response:
         """
         Count emails for domain or company.
 
@@ -141,8 +141,8 @@ class AsyncService(object):
         url: str,
         method: str = 'get',
         raw: bool = False,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> dict | httpx.Response:
         """Perform async http request."""
         request = httpx.Request(
             method,

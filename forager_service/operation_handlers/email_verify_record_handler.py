@@ -1,6 +1,8 @@
 """Handler for verified email records CRUD operations."""
 from typing import Optional
 
+import httpx
+
 from forager_service.app_services.crud_service import CRUDService
 from forager_service.app_services.service import Service
 from forager_service.hunter import HunterService
@@ -24,9 +26,11 @@ class EmailVerifyCRUDHandler(object):
         :param email: str Email to create record.
         :return: bool True, if operation was successfull, otherwise False. If email in storage - None.
         """
-        if self._crud_service.storage.get(email):
+        if self._crud_service.storage.get(email) or self._hunter is None:
             return None
-        received_data: dict = self._hunter.verify_email(email)
+        received_data: dict | httpx.Response = self._hunter.verify_email(email)
+        if not isinstance(received_data, dict):
+            return None
         if received_data.get('errors') is not None:
             return False
         self._crud_service.create(
@@ -48,7 +52,7 @@ class EmailVerifyCRUDHandler(object):
         """
         return self._crud_service.read(email)
 
-    def update_email_record(self, email: str, param_dict) -> bool:
+    def update_email_record(self, email: str, param_dict: dict) -> bool:
         """
         Update email record in storage.
 
