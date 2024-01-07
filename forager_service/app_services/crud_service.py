@@ -42,7 +42,7 @@ class CRUDService(object):
         common_validators.validate_str('storage_key', key)
         if key not in self._storage:
             raise ForagerKeyError(
-                'key {key} alreade presents in storage. Use "create" operation.'.format(key=key),
+                'key {key} is not in storage. Use "create" operation.'.format(key=key),
             )
         self._storage[key] = some_data
 
