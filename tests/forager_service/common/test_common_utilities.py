@@ -14,7 +14,7 @@ class TestCreateAdnValidateParams(object):
         operation_type: str = faker.random_element(
             elements=('email-count', 'email-verifier', 'email-finder', 'domain-search'),
         )
-        kwargs: dict = get_kwargs.get(operation_type)
+        kwargs: dict = get_kwargs.get(operation_type, {})
         received_data = create_and_validate_params(operation_type, **kwargs)
         for key, param_value in kwargs.items():
             assert received_data[key] == param_value
@@ -22,7 +22,7 @@ class TestCreateAdnValidateParams(object):
     def test_create_and_validate_params_some_empty(self, faker: Faker, get_kwargs: dict) -> None:
         """Test create_and_validate_params."""
         operation_type: str = faker.random_element(elements=('email-count', 'email-finder', 'domain-search'))
-        kwargs: dict = get_kwargs.get(operation_type)
+        kwargs: dict = get_kwargs.get(operation_type, {})
         key = faker.random_element(elements=kwargs.keys())
         if key not in {'domain', 'company'}:
             kwargs[key] = None
@@ -38,7 +38,7 @@ class TestCreateAdnValidateParams(object):
         operation_type: str = faker.random_element(
             elements=('email-count', 'email-verifier', 'email-finder', 'domain-search'),
         )
-        kwargs: dict = get_kwargs.get(operation_type)
+        kwargs: dict = get_kwargs.get(operation_type, {})
         key = faker.random_element(elements=kwargs.keys())
         kwargs[key] = set()
         with pytest.raises(ArgumentValidationError):
@@ -52,7 +52,7 @@ class TestCreateAdnValidateParams(object):
         """Test create_and_validate_params."""
         kwargs_dict: dict = get_kwargs
         operation_type: str = 'email-finder'
-        kwargs: dict = kwargs_dict.get(operation_type)
+        kwargs: dict = kwargs_dict.get(operation_type, {})
         elements = faker.random_element(elements=[('full_name', 'first_name'), ('full_name', 'last_name')])
         for elem in elements:
             if kwargs.get(elem):
@@ -64,7 +64,7 @@ class TestCreateAdnValidateParams(object):
         """Test create_and_validate_params."""
         kwargs_dict: dict = get_kwargs
         operation_type: str = faker.random_element(elements=('email-count', 'email-finder', 'domain-search'))
-        kwargs: dict = kwargs_dict.get(operation_type)
+        kwargs: dict = kwargs_dict.get(operation_type, {})
         elements = ('company', 'domain')
         for elem in elements:
             if kwargs.get(elem) is not None:

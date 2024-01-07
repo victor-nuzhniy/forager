@@ -1,4 +1,6 @@
 """Pytest fixtures for tests forager_service module."""
+from typing import Any
+
 import pytest
 from faker import Faker
 
@@ -64,6 +66,6 @@ def get_kwargs(faker: Faker) -> dict:
     }
 
 
-def get_query(some_variable, **kwargs) -> tuple:
+def get_query(some_variable: Any, **kwargs: Any) -> tuple:
     """Return given arguments."""
     return some_variable, kwargs
