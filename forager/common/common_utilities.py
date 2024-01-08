@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from forager.common.validators import params_validators, special_validators, validators
+from forager.common.validators import special_validators, validators
 
 
 def create_and_validate_params(operation_type: str, **kwargs: Any) -> dict:
@@ -18,9 +18,9 @@ def create_and_validate_params(operation_type: str, **kwargs: Any) -> dict:
     param_dict: dict = {}
     for key, element in kwargs.items():
         if element is not None:
-            for validator in validators[key]:
+            for validator in validators[key]:   # type: ignore
                 validator(key, element)
             param_dict[key] = element
-    for validation_handler in params_validators['required_arguments']:
+    for validation_handler in validators['required_arguments']:
         validation_handler(operation_type, param_dict)
     return param_dict
