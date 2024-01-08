@@ -12,7 +12,7 @@ Email validation service.
 
 ### To install
 
-   pip install forager_forward==0.1.0
+   pip install forager_forward
 
 ## Usage
 
