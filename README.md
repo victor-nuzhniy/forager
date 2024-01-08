@@ -12,7 +12,7 @@ Email validation service.
 
 ### To install
 
-   pip install forager_forward
+   pip install forager_forward==0.1.1
 
 ## Usage
 
@@ -35,18 +35,14 @@ Additionally, service supports crud methods for locally storing data
 
     initializer.initialize_client("api_key_got_from_hunter")
 
-    initializer.initialize_async_client("api_key_got_from_hunter")
 
     client = initializer.client
-
-    async_client = initializer.async_client
 
 
 ### Once initialized somewhere in the code you can get instances in different places without additional initialization
 
     client = ClientInitializer().client
 
-    async_client = ClientInitializer().async_client
 
 ### Search addresses for a given domain
 
