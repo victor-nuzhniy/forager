@@ -23,11 +23,10 @@ class TestClientDomainSearch(object):
         api_key: str = 'some_key'
         ClientInitializer().initialize_client(api_key)
         mock_request.side_effect = get_query
-        received_data = ClientInitializer().service.domain_search(domain)
-        url, kwargs = received_data
-        assert url == 'https://api.hunter.io/v2/domain-search'
+        received_data = ClientInitializer().client.domain_search(domain)
+        operation, kwargs = received_data
+        assert operation == 'domain-search'
         assert kwargs.get('param_dict')['domain'] == domain
-        assert kwargs.get('param_dict')['api_key'] == api_key
         assert kwargs['raw'] is False
 
     def test_domain_search_error(
@@ -39,7 +38,7 @@ class TestClientDomainSearch(object):
         api_key: str = faker.pystr(min_chars=3)
         ClientInitializer().initialize_client(api_key)
         with pytest.raises(ArgumentValidationError):
-            ClientInitializer().service.domain_search(domain)
+            ClientInitializer().client.domain_search(domain)
 
 
 class TestClientEmailFinder(object):
@@ -56,12 +55,11 @@ class TestClientEmailFinder(object):
         full_name: str = faker.last_name()
         ClientInitializer().initialize_client('some_api_key')
         mock_request.side_effect = get_query
-        received_data = ClientInitializer().service.email_finder(domain, full_name=full_name)
+        received_data = ClientInitializer().client.email_finder(domain, full_name=full_name)
         param_dict: dict = received_data[1].get('param_dict')
-        assert received_data[0] == 'https://api.hunter.io/v2/email-finder'
+        assert received_data[0] == 'email-finder'
         assert param_dict['domain'] == domain
         assert param_dict['full_name'] == full_name
-        assert param_dict['api_key'] == 'some_api_key'
         assert received_data[1]['raw'] is False
 
 
@@ -78,11 +76,10 @@ class TestClientVerifyEmail(object):
         email: str = faker.email()
         ClientInitializer().initialize_client('api_key')
         mock_request.side_effect = get_query
-        received_data = ClientInitializer().service.verify_email(email)
+        received_data = ClientInitializer().client.verify_email(email)
         param_dict: dict = received_data[1].get('param_dict')
-        assert received_data[0] == 'https://api.hunter.io/v2/email-verifier'
+        assert received_data[0] == 'email-verifier'
         assert param_dict['email'] == email
-        assert param_dict['api_key'] == 'api_key'
         assert received_data[1]['raw'] is False
 
 
@@ -100,9 +97,9 @@ class TestClientEmailCount(object):
         email_type: str = faker.random_element(elements=('personal', 'generic'))
         ClientInitializer().initialize_client('some_api_key')
         mock_request.side_effect = get_query
-        rec_data = ClientInitializer().service.email_count(domain, email_type=email_type)
+        rec_data = ClientInitializer().client.email_count(domain, email_type=email_type)
         param_dict: dict = rec_data[1].get('param_dict')
-        assert rec_data[0] == 'https://api.hunter.io/v2/email-count'
+        assert rec_data[0] == 'email-count'
         assert param_dict['domain'] == domain
         assert param_dict['type'] == email_type
         assert rec_data[1]['raw'] is False

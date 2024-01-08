@@ -22,6 +22,6 @@ class ClientInitializer(object):
         self._client = Client(api_key)
 
     @property
-    def service(self) -> Optional[Client]:
+    def client(self) -> Optional[Client]:
         """Get client instance."""
         return self._client
