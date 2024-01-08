@@ -1,6 +1,7 @@
-# Forager service
+# Forager clients and services
 
-A python wrapper for the Hunter.io v2 api with additinal crud service.
+A python wrapper for the Hunter.io v2 api as a client.
+Email validation service.
 
 ## Installation
 
@@ -11,7 +12,7 @@ A python wrapper for the Hunter.io v2 api with additinal crud service.
 
 ### To install
 
-   pip install forager_service==0.1.2
+   pip install forager_service==0.1.3
 
 ## Usage
 
@@ -28,60 +29,64 @@ Additionally, service supports crud methods for locally storing data
 
 ### Import service and instantiate it once
 
-    from forager_service.hunter import HunterService
+    from forager.client_initializer import ClientInitializer
 
-    initializer = HunterService()
+    initializer = ClientInitializer()
 
-    initializer.initialize_service("api_key_got_from_hunter")
+    initializer.initialize_client("api_key_got_from_hunter")
 
-    initializer.initialize_async_service("api_key_got_from_hunter")
+    initializer.initialize_async_client("api_key_got_from_hunter")
 
-    hunter = initializer.service 
+    client = initializer.client
 
-    async_hunter = initializer.async_service
+    async_client = initializer.async_client
 
 
 ### Once initialized somewhere in the code you can get instances in different places without additional initialization
 
-    hunter = HunterService().service
+    client = ClientInitializer().client
 
-    async_hunter = HunterService().async_service
-
-### All data stores in crud_service internal storage.
+    async_client = ClientInitializer().async_client
 
 ### Search addresses for a given domain
 
-    hunter.domain_search("www.brillion.com.ua")
+    client.domain_search("www.brillion.com.ua")
 
 ### Or pass company name
 
-    hunter.domain_search(company="Brillion", limit=20, seniority="junior")
+    client.domain_search(company="Brillion", limit=20, seniority="junior")
 
 ### Find email address
 
-    hunter.email_finder(compayny="pmr", full_name="Sergiy Petrov", raw=True)
+    client.email_finder(compayny="pmr", full_name="Sergiy Petrov", raw=True)
 
 ### Check email deliverabelity
 
-    hunter.email_verifier("a@a.com")
+    client.email_verifier("a@a.com")
 
-### CRUD operations can be performed to manipulate received data
+### All data can be stored in Storage class instance. It has its own crud methods, and it is Singleton.
 
-    from forager_service.app_services.crud_service import CRUDService
+    from forager.common.storage import Storage
 
-    crud_service = CRUDService()
+    storage = Storage()
 
-    crud_service.create("company_email", hunter.domain_search("company.com.ua"))
+    storage.create(some_key, some_value)
 
-### To collect email validation and other info use email_verify_record_handler. Data will be saved in local storage.
+    storage.update(some_key, some_value)
 
-    from forager_service.operation_handlers.email_verify_record_handler import EmailVerifyCRUDHandler
+    some_variable = storage.read(some_key)
 
-    email_handler = EmailVerifyCRUDHandler()
+    storage.delete(some_key)
 
-    email_handler.create_email_record("some_email@company.com")
+### To validate emails and store validation result use email_validation_service.
 
-    email_handler.read("another@company.com")
+    from forager.app_services.email_validation_service import EmailValidationService
+
+    email_validator = EmailValidationService()
+
+    email_validator.create_email_record("some_email@company.com")
+
+    email_validator.read("another@company.com")
 
 ## Tests
 

@@ -2,7 +2,7 @@
 import re
 from typing import Callable, Union
 
-from forager_service.common.exceptions import ArgumentValidationError
+from forager.common.exceptions import ArgumentValidationError
 
 operation_arguments = {
     'domain-search': {'domain', 'company', 'limit', 'offset', 'type', 'seniority', 'department', 'required_field'},

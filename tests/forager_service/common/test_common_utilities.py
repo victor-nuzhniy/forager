@@ -1,9 +1,9 @@
-"""Module for forager_service utils."""
+"""Module for forager utils."""
 import pytest
 from faker import Faker
 
-from forager_service.common.common_utilities import create_and_validate_params
-from forager_service.common.exceptions import ArgumentValidationError
+from forager.common.common_utilities import create_and_validate_params
+from forager.common.exceptions import ArgumentValidationError
 
 
 class TestCreateAdnValidateParams(object):

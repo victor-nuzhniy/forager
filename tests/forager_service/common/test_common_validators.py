@@ -2,8 +2,8 @@
 import pytest
 from faker import Faker
 
-from forager_service.common.exceptions import ArgumentValidationError
-from forager_service.common.validators import common_validators
+from forager.common.exceptions import ArgumentValidationError
+from forager.common.validators import common_validators
 
 
 class TestValidatorsValidateStr(object):

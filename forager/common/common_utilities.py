@@ -3,11 +3,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from forager_service.common.validators import (
-    params_validators,
-    special_validators,
-    validators,
-)
+from forager.common.validators import params_validators, special_validators, validators
 
 
 def create_and_validate_params(operation_type: str, **kwargs: Any) -> dict:

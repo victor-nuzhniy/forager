@@ -3,8 +3,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from forager_service.common.exceptions import ForagerKeyError
-from forager_service.common.validators import common_validators
+from forager.common.exceptions import ForagerKeyError
+from forager.common.validators import common_validators
 
 
 class Storage(object):

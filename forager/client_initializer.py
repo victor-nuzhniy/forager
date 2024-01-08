@@ -3,8 +3,8 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from forager_service.app_clients.async_client import AsyncClient
-from forager_service.app_clients.client import Client
+from forager.app_clients.async_client import AsyncClient
+from forager.app_clients.client import Client
 
 
 class ClientInitializer(object):
@@ -19,11 +19,11 @@ class ClientInitializer(object):
             cls.instance = super().__new__(cls, *args, **kwargs)
         return cls.instance
 
-    def initialize_service(self, api_key: str) -> None:
+    def initialize_client(self, api_key: str) -> None:
         """Initialize client instance."""
         self._client = Client(api_key)
 
-    def initialize_async_service(self, api_key: str) -> None:
+    def initialize_async_client(self, api_key: str) -> None:
         """Initialize async client instance."""
         self._async_client = AsyncClient(api_key)
 

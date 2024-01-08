@@ -1,1 +1,1 @@
-"""Init module for tests forager_service package."""
+"""Init module for tests forager package."""

@@ -1,15 +1,15 @@
-"""Service for Forager project."""
+"""AsyncService for Forager project."""
 from __future__ import annotations
 
 from typing import Any, Optional
 
 import httpx
 
-from forager_service.common.common_utilities import create_and_validate_params
-from forager_service.common.exceptions import ForagerAPIError
+from forager.common.common_utilities import create_and_validate_params
+from forager.common.exceptions import ForagerAPIError
 
 
-class Client(object):
+class AsyncClient(object):
     """Service for performing api calls."""
 
     def __init__(self, api_key: str) -> None:
@@ -17,7 +17,7 @@ class Client(object):
         self.api_key: str = api_key
         self.endpoint: str = 'https://api.hunter.io/v2/'
 
-    def domain_search(
+    async def domain_search(
         self,
         domain: Optional[str] = None,
         company: Optional[str] = None,
@@ -45,12 +45,17 @@ class Client(object):
         :return: Full payload of the query as a dict, with email addresses found.
         """
         operation: str = 'domain-search'
-        param_dict: dict = create_and_validate_params(operation, domain=domain, company=company, **kwargs)
-        url: str = '{domain}{operation}'.format(domain=self.endpoint, operation=operation)
+        param_dict: dict = create_and_validate_params(
+            operation,
+            domain=domain,
+            company=company,
+            **kwargs,
+        )
+        url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
         param_dict['api_key'] = self.api_key
-        return self._perform_request(url, param_dict=param_dict, raw=raw)
+        return await self._perform_request(url, param_dict=param_dict, raw=raw)
 
-    def email_finder(
+    async def email_finder(
         self,
         domain: Optional[str] = None,
         company: Optional[str] = None,
@@ -82,9 +87,9 @@ class Client(object):
         )
         url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
         param_dict['api_key'] = self.api_key
-        return self._perform_request(url, param_dict=param_dict, raw=raw)
+        return await self._perform_request(url, param_dict=param_dict, raw=raw)
 
-    def verify_email(
+    async def verify_email(
         self,
         email: str,
         raw: bool = False,
@@ -103,9 +108,9 @@ class Client(object):
         )
         url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
         param_dict['api_key'] = self.api_key
-        return self._perform_request(url, param_dict=param_dict, raw=raw)
+        return await self._perform_request(url, param_dict=param_dict, raw=raw)
 
-    def email_count(
+    async def email_count(
         self,
         domain: Optional[str] = None,
         company: Optional[str] = None,
@@ -129,16 +134,16 @@ class Client(object):
             type=email_type,
         )
         url: str = '{endpoint}{operation}'.format(endpoint=self.endpoint, operation=operation)
-        return self._perform_request(url, param_dict=param_dict, raw=raw)
+        return await self._perform_request(url, param_dict=param_dict, raw=raw)
 
-    def _perform_request(
+    async def _perform_request(
         self,
         url: str,
         method: str = 'get',
         raw: bool = False,
         **kwargs: Any,
     ) -> dict | httpx.Response:
-        """Perform http request."""
+        """Perform async http request."""
         request = httpx.Request(
             method,
             url,
@@ -146,8 +151,8 @@ class Client(object):
             json=kwargs.get('payload'),
             headers=kwargs.get('headers'),
         )
-        with httpx.Client() as client:
-            response: httpx.Response = client.send(request)
+        async with httpx.AsyncClient() as client:
+            response = await client.send(request)
         if raw:
             return response
         some_data: Optional[dict] = response.json().get('data')

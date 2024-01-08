@@ -1,17 +1,17 @@
-"""Module for testing AsyncService functionality."""
+"""Module for testing AsyncClient functionality."""
 from unittest.mock import AsyncMock, patch
 
 from asgiref.sync import async_to_sync
 from faker import Faker
 
-from forager_service.client_initializer import ClientInitializer
+from forager.client_initializer import ClientInitializer
 from tests.forager_service.conftest import get_query
 
 
-class TestAsyncServiceDomainSearch(object):
-    """Class for testing AsyncService domain_search method."""
+class TestAsyncClientDomainSearch(object):
+    """Class for testing AsyncClient domain_search method."""
 
-    @patch('forager_service.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
+    @patch('forager.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
     def test_adomain_search(
         self,
         mock_request: AsyncMock,
@@ -19,7 +19,7 @@ class TestAsyncServiceDomainSearch(object):
     ) -> None:
         """Test domain_search method."""
         domain: str = faker.city()
-        ClientInitializer().initialize_async_service('api_key')
+        ClientInitializer().initialize_async_client('api_key')
         mock_request.side_effect = get_query
         received_data = async_to_sync(ClientInitializer().async_service.domain_search)(domain, limit=8)
         url, kwargs_dict = received_data
@@ -31,10 +31,10 @@ class TestAsyncServiceDomainSearch(object):
         assert kwargs_dict['raw'] is False
 
 
-class TestAsyncServiceEmailFinder(object):
-    """Class for testing AsyncService email_finder method."""
+class TestAsyncClientEmailFinder(object):
+    """Class for testing AsyncClient email_finder method."""
 
-    @patch('forager_service.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
+    @patch('forager.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
     def test_aemail_finder(
         self,
         mock_request: AsyncMock,
@@ -44,7 +44,7 @@ class TestAsyncServiceEmailFinder(object):
         domain: str = faker.city()
         first_name: str = faker.first_name()
         last_name: str = faker.last_name()
-        ClientInitializer().initialize_async_service('some_api_key')
+        ClientInitializer().initialize_async_client('some_api_key')
         mock_request.side_effect = get_query
         received_data = async_to_sync(ClientInitializer().async_service.email_finder)(
             domain,
@@ -59,10 +59,10 @@ class TestAsyncServiceEmailFinder(object):
         assert received_data[1]['raw'] is False
 
 
-class TestAsyncServiceVerifyEmail(object):
-    """Class for testing AsyncService verify_email method."""
+class TestAsyncClientVerifyEmail(object):
+    """Class for testing AsyncClient verify_email method."""
 
-    @patch('forager_service.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
+    @patch('forager.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
     def test_averify_email(
         self,
         mock_request: AsyncMock,
@@ -70,7 +70,7 @@ class TestAsyncServiceVerifyEmail(object):
     ) -> None:
         """Test averify_email method."""
         email: str = faker.email()
-        ClientInitializer().initialize_async_service('some_api_key')
+        ClientInitializer().initialize_async_client('some_api_key')
         mock_request.side_effect = get_query
         rec_data = async_to_sync(ClientInitializer().async_service.verify_email)(email)
         param_dict: dict = rec_data[1].get('param_dict')
@@ -80,10 +80,10 @@ class TestAsyncServiceVerifyEmail(object):
         assert rec_data[1]['raw'] is False
 
 
-class TestAsyncServiceEmailCount(object):
-    """Class for testing Service email_count method."""
+class TestAsyncClientEmailCount(object):
+    """Class for testing AsyncClient email_count method."""
 
-    @patch('forager_service.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
+    @patch('forager.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
     def test_async_email_count(
         self,
         mock_request: AsyncMock,
@@ -92,7 +92,7 @@ class TestAsyncServiceEmailCount(object):
         """Test aemail_finder method."""
         domain: str = faker.city()
         api_key: str = faker.pystr(min_chars=3)
-        ClientInitializer().initialize_async_service(api_key)
+        ClientInitializer().initialize_async_client(api_key)
         mock_request.side_effect = get_query
         received_data = async_to_sync(ClientInitializer().async_service.email_count)(domain)
         url, kwargs_dict = received_data
