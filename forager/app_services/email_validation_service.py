@@ -22,9 +22,9 @@ class EmailValidationService(object):
             for validator in validators['email']:
                 validator('email', email)
         except ArgumentValidationError:
-            self._storage.create(email, False)
+            self._storage.create(email, some_data=False)
             return False
-        self._storage.create(email, True)
+        self._storage.create(email, some_data=True)
         return True
 
     def read_email_record(self, email: str) -> Optional[dict]:
