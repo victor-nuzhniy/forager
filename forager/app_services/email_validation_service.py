@@ -7,7 +7,7 @@ from forager.common.validators import validators
 
 
 class EmailValidationService(object):
-    """Class for process email verification state info."""
+    """Class email validation and crud result."""
 
     _storage: Storage = Storage()
 

@@ -1,4 +1,4 @@
-"""Validators for arguments."""
+"""Forager project validators."""
 import re
 from typing import Callable, Union
 

@@ -8,7 +8,7 @@ from forager.app_clients.client import Client
 
 
 class ClientInitializer(object):
-    """Singlton class for initialized instance."""
+    """Singleton class for client initialization and retrieving."""
 
     _client: Optional[Client] = None
     _async_client: Optional[AsyncClient] = None

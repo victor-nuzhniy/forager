@@ -8,7 +8,7 @@ from forager.common.validators import common_validators
 
 
 class Storage(object):
-    """Service for perform CRUD operations with storage."""
+    """Storage with methods to perform CRUD operations, Singlton."""
 
     _storage: dict = {}
 

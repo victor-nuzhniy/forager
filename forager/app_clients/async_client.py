@@ -1,4 +1,4 @@
-"""AsyncService for Forager project."""
+"""AsyncClient for Forager project."""
 from __future__ import annotations
 
 from typing import Any, Optional
@@ -10,10 +10,10 @@ from forager.common.exceptions import ForagerAPIError
 
 
 class AsyncClient(object):
-    """Service for performing api calls."""
+    """Client for performing async api calls."""
 
     def __init__(self, api_key: str) -> None:
-        """Initialize service."""
+        """Initialize client."""
         self.api_key: str = api_key
         self.endpoint: str = 'https://api.hunter.io/v2/'
 
