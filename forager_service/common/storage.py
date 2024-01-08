@@ -1,4 +1,4 @@
-"""CRUD service for Forager project."""
+"""Storage for Forager project."""
 from __future__ import annotations
 
 from typing import Any
@@ -7,12 +7,12 @@ from forager_service.common.exceptions import ForagerKeyError
 from forager_service.common.validators import common_validators
 
 
-class CRUDService(object):
+class Storage(object):
     """Service for perform CRUD operations with storage."""
 
     _storage: dict = {}
 
-    def __new__(cls, *args: Any, **kwargs: Any) -> CRUDService:
+    def __new__(cls, *args: Any, **kwargs: Any) -> Storage:
         """Create new instance, if it's None, otherwise use earlier created one."""
         if getattr(cls, 'instance', None) is None:
             cls.instance = super().__new__(cls, *args, **kwargs)
