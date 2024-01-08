@@ -4,15 +4,15 @@ from unittest.mock import MagicMock, patch
 import pytest
 from faker import Faker
 
-from forager.client_initializer import ClientInitializer
-from forager.common.exceptions import ArgumentValidationError
+from forager_forward.client_initializer import ClientInitializer
+from forager_forward.common.exceptions import ArgumentValidationError
 from tests.forager_service.conftest import get_query
 
 
 class TestClientDomainSearch(object):
     """Class for testing Client domain_search method."""
 
-    @patch('forager.app_clients.client.Client._perform_request')
+    @patch('forager_forward.app_clients.client.Client._perform_request')
     def test_domain_search(
         self,
         mock_request: MagicMock,
@@ -45,7 +45,7 @@ class TestClientDomainSearch(object):
 class TestClientEmailFinder(object):
     """Class for testing Client email_finder method."""
 
-    @patch('forager.app_clients.client.Client._perform_request')
+    @patch('forager_forward.app_clients.client.Client._perform_request')
     def test_email_finder(
         self,
         mock_request: MagicMock,
@@ -68,7 +68,7 @@ class TestClientEmailFinder(object):
 class TestClientVerifyEmail(object):
     """Class for testing Client verify_email method."""
 
-    @patch('forager.app_clients.client.Client._perform_request')
+    @patch('forager_forward.app_clients.client.Client._perform_request')
     def test_verify_email(
         self,
         mock_request: MagicMock,
@@ -89,7 +89,7 @@ class TestClientVerifyEmail(object):
 class TestClientEmailCount(object):
     """Class for testing Client email_count method."""
 
-    @patch('forager.app_clients.client.Client._perform_request')
+    @patch('forager_forward.app_clients.client.Client._perform_request')
     def test_email_count(
         self,
         mock_request: MagicMock,

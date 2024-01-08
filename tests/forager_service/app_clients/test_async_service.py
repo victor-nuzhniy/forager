@@ -4,14 +4,14 @@ from unittest.mock import AsyncMock, patch
 from asgiref.sync import async_to_sync
 from faker import Faker
 
-from forager.client_initializer import ClientInitializer
+from forager_forward.client_initializer import ClientInitializer
 from tests.forager_service.conftest import get_query
 
 
 class TestAsyncClientDomainSearch(object):
     """Class for testing AsyncClient domain_search method."""
 
-    @patch('forager.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
+    @patch('forager_forward.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
     def test_adomain_search(
         self,
         mock_request: AsyncMock,
@@ -34,7 +34,7 @@ class TestAsyncClientDomainSearch(object):
 class TestAsyncClientEmailFinder(object):
     """Class for testing AsyncClient email_finder method."""
 
-    @patch('forager.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
+    @patch('forager_forward.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
     def test_aemail_finder(
         self,
         mock_request: AsyncMock,
@@ -62,7 +62,7 @@ class TestAsyncClientEmailFinder(object):
 class TestAsyncClientVerifyEmail(object):
     """Class for testing AsyncClient verify_email method."""
 
-    @patch('forager.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
+    @patch('forager_forward.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
     def test_averify_email(
         self,
         mock_request: AsyncMock,
@@ -83,7 +83,7 @@ class TestAsyncClientVerifyEmail(object):
 class TestAsyncClientEmailCount(object):
     """Class for testing AsyncClient email_count method."""
 
-    @patch('forager.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
+    @patch('forager_forward.app_clients.async_client.AsyncClient._perform_request', new_callable=AsyncMock)
     def test_async_email_count(
         self,
         mock_request: AsyncMock,

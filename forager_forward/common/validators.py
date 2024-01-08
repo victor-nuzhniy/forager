@@ -1,8 +1,8 @@
 """Forager project validators."""
 import re
 
-from forager.common.exceptions import ArgumentValidationError
-from forager.common.project_types import ValidatorTypeDict
+from forager_forward.common.exceptions import ArgumentValidationError
+from forager_forward.common.project_types import ValidatorTypeDict
 
 operation_arguments = {
     'domain-search': {'domain', 'company', 'limit', 'offset', 'type', 'seniority', 'department', 'required_field'},

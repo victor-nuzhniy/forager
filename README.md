@@ -12,7 +12,7 @@ Email validation service.
 
 ### To install
 
-   pip install forager_service==0.1.3
+   pip install forager_forward==0.1.0
 
 ## Usage
 
@@ -29,7 +29,7 @@ Additionally, service supports crud methods for locally storing data
 
 ### Import service and instantiate it once
 
-    from forager.client_initializer import ClientInitializer
+    from forager_forward.client_initializer import ClientInitializer
 
     initializer = ClientInitializer()
 
@@ -66,7 +66,7 @@ Additionally, service supports crud methods for locally storing data
 
 ### All data can be stored in Storage class instance. It has its own crud methods, and it is Singleton.
 
-    from forager.common.storage import Storage
+    from forager_forward.common.storage import Storage
 
     storage = Storage()
 
@@ -80,7 +80,7 @@ Additionally, service supports crud methods for locally storing data
 
 ### To validate emails and store validation result use email_validation_service.
 
-    from forager.app_services.email_validation_service import EmailValidationService
+    from forager_forward.app_services.email_validation_service import EmailValidationService
 
     email_validator = EmailValidationService()
 

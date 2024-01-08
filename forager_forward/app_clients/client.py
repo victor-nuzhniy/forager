@@ -5,8 +5,8 @@ from typing import Any, Optional
 
 import httpx
 
-from forager.common.common_utilities import create_and_validate_params
-from forager.common.exceptions import ForagerAPIError
+from forager_forward.common.common_utilities import create_and_validate_params
+from forager_forward.common.exceptions import ForagerAPIError
 
 
 class Client(object):

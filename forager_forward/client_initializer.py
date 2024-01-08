@@ -3,8 +3,8 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from forager.app_clients.async_client import AsyncClient
-from forager.app_clients.client import Client
+from forager_forward.app_clients.async_client import AsyncClient
+from forager_forward.app_clients.client import Client
 
 
 class ClientInitializer(object):

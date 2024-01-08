@@ -1,9 +1,9 @@
-"""Module for testing forager validators."""
+"""Module for testing forager_forward validators."""
 import pytest
 from faker import Faker
 
-from forager.common.exceptions import ArgumentValidationError
-from forager.common.validators import kwargs_validators, special_validators
+from forager_forward.common.exceptions import ArgumentValidationError
+from forager_forward.common.validators import kwargs_validators, special_validators
 
 
 class TestValidatorsValidateEmailType(object):

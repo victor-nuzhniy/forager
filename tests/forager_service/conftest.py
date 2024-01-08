@@ -1,4 +1,4 @@
-"""Pytest fixtures for tests forager module."""
+"""Pytest fixtures for tests forager_forward module."""
 from typing import Any
 
 import pytest

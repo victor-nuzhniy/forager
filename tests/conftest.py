@@ -1,4 +1,4 @@
-"""Pytest fixtures for forager project."""
+"""Pytest fixtures for forager_forward project."""
 import random
 
 import pytest

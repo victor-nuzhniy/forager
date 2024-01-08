@@ -1,9 +1,9 @@
 """Service for email validation with result saving to storage."""
 from typing import Optional
 
-from forager.common.exceptions import ArgumentValidationError
-from forager.common.storage import Storage
-from forager.common.validators import validators
+from forager_forward.common.exceptions import ArgumentValidationError
+from forager_forward.common.storage import Storage
+from forager_forward.common.validators import validators
 
 
 class EmailValidationService(object):
