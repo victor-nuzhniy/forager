@@ -3,20 +3,20 @@ from typing import Optional
 
 import httpx
 
+from forager_service.app_clients.client import Client
 from forager_service.app_services.crud_service import CRUDService
-from forager_service.app_services.service import Service
-from forager_service.hunter import HunterService
+from forager_service.client_initializer import ClientInitializer
 
 
 class EmailVerifyCRUDHandler(object):
     """Class for process email verification state info."""
 
     _crud_service: CRUDService = CRUDService()
-    _hunter: Optional[Service] = None
+    _hunter: Optional[Client] = None
 
     def __init__(self) -> None:
         """Initialize class instance."""
-        hunter_service = HunterService()
+        hunter_service = ClientInitializer()
         self._hunter = hunter_service.service
 
     def create_email_record(self, email: str) -> Optional[bool]:
